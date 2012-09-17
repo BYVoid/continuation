@@ -335,20 +335,31 @@ function transformSwitch(statement, place) {
   var innerPlace = [];
   var caseFunctions = [];
   var caseResults = [];
+  var async = false;
   //Make case function form cases
   statement.cases.forEach(function (sCase, index) {
     var name = 'case_' + index;
     var func = makeCallbackFunction(name, sCase.consequent);
     var res = transformBlock(func.body);
+    async = async || res.async;
     caseResults.push(res);
     caseFunctions.push(func);
-    
+    innerPlace.push(func);
+  });
+  
+  if (!async) {
+    //No need to transform
+    place.push(statement);
+    return place;
+  }
+  
+  //Replace statements in cases with case function calls
+  statement.cases.forEach(function (sCase, index) {
+    var name = 'case_' + index;
     var callbackStatement = makeFunctionCall(name, [{type: 'Identifier', name: continuationIdentifier}]);
     sCase.consequent = [
       makeReturnStatement(callbackStatement.expression),
     ];
-    
-    innerPlace.push(func);
   });
   
   caseFunctions.forEach(function (func, index) {

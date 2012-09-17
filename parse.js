@@ -55,6 +55,8 @@ function transformBlock(block) {
       newPlace = transformFor(statement, place);
     } else if (statement.type === 'SwitchStatement') {
       newPlace = transformSwitch(statement, place);
+    } else if (statement.type === 'FunctionDeclaration') {
+      newPlace = transformFunctionDeclaration(statement, place);
     } else {
       place.push(statement);
     }
@@ -121,6 +123,9 @@ function transformAssignment(statement, place) {
     if (newPlace) {
       return newPlace;
     }
+  } else if (statement.expression.right.type === 'FunctionExpression') {
+    transformBlock(statement.expression.right.body);
+    place.push(statement);
   } else {
     place.push(statement);
   }
@@ -129,16 +134,19 @@ function transformAssignment(statement, place) {
 
 function transformDeclarations(statement, place) {
   statement.declarations.forEach(function (declaration) {
-    var newPlace;
-    if (declaration.init !== null && declaration.init.type === 'CallExpression') {
-      newPlace = continuationToCallback(declaration.init.arguments);
+    var newPlace = null;
+    if (declaration.init !== null) {
+      if (declaration.init.type === 'CallExpression') {
+        newPlace = continuationToCallback(declaration.init.arguments);
+      } else if (declaration.init.type === 'FunctionExpression') {
+        transformBlock(declaration.init.body);
+      }
     }
-    var newStatement = {
-      type: statement.type,
-      declarations: [declaration],
+    place.push({
+      type: 'VariableDeclaration',
       kind: statement.kind,
-    };
-    place.push(newStatement);
+      declarations: [declaration],
+    });
     if (newPlace) {
       place = newPlace;
     }
@@ -401,3 +409,9 @@ function transformSwitch(statement, place) {
   
   return nextPlace;
 };
+
+function transformFunctionDeclaration(statement, place) {
+  transformBlock(statement.body);
+  place.push(statement);
+  return place;
+}

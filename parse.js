@@ -4,6 +4,16 @@ var esprima = require('esprima');
 var esmangle = require('esmangle');
 var escodegen = require('escodegen');
 
+var syntax = require('./syntax');
+var Literal = syntax.Literal;
+var Identifier = syntax.Identifier;
+var MemberExpression = syntax.MemberExpression;
+var Assignment = syntax.Assignment;
+var BlockStatement = syntax.BlockStatement;
+var FunctionDeclaration = syntax.FunctionDeclaration;
+var ExpressionStatement = syntax.ExpressionStatement;
+var CallExpression = syntax.CallExpression;
+
 var continuationIdentifier = 'continuation';
 
 var filename = process.argv[2];
@@ -18,7 +28,7 @@ fs.readFile(filename, 'utf-8', function(err, text) {
 });
 
 function transform(ast) {
-  console.log(util.inspect(ast, false, null, true));
+  //console.log(util.inspect(ast, false, null, true));
   transformBlock(ast);
   console.log(escodegen.generate(ast));
 }
@@ -77,11 +87,15 @@ function continuationToCallback(args) {
     //Function call with continuation
     var contExpr = args[contPos];
     var callbackBlock = [];
+    contExpr.arguments.forEach(function (arg, index) {
+      callbackBlock.push(new Assignment(arg, new MemberExpression(new Identifier('arguments'), new Literal(index))));
+    });
+    
     //Replace continuation with a callback function
     args[contPos] = {
       type: 'FunctionExpression',
       id: null,
-      params: contExpr.arguments,
+      params: [],
       body: {
         type: 'BlockStatement',
         body: callbackBlock,
@@ -203,30 +217,25 @@ function transformWhile(statement, place) {
     };
     blockRes.place.push(nextStatement);
     
-    place.push({
-      type: 'FunctionDeclaration',
-      id: {type: 'Identifier', name: loopFunctionName},
-      params: [{type: 'Identifier', name: continuationIdentifier}],
-      body: {
-        type: 'BlockStatement',
-        body: [{
-          type: 'IfStatement',
-          test: statement.test,
-          consequent: statement.body,
-          alternate: {
-            type: 'BlockStatement',
-            body: [{
-              type: 'ExpressionStatement',
-              expression: {
-                type: 'CallExpression',
-                callee: { type: 'Identifier', name: continuationIdentifier },
-                arguments: []
-              },
-            }],
-          },
-        }],
-      },
-    });
+    var body = new BlockStatement([{
+      type: 'IfStatement',
+      test: statement.test,
+      consequent: statement.body,
+      alternate: new BlockStatement([
+        new ExpressionStatement(
+          new CallExpression(
+            new Identifier(continuationIdentifier),
+            []
+          )
+        )
+      ]),
+    }]);
+    
+    place.push(new FunctionDeclaration(
+      new Identifier(loopFunctionName),
+      [new Identifier(continuationIdentifier)],
+      body
+    ));
     
     var nextPlace = [];
     place.push({

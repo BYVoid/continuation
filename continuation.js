@@ -15,22 +15,23 @@ var ExpressionStatement = syntax.ExpressionStatement;
 var CallExpression = syntax.CallExpression;
 var ReturnStatement = syntax.ReturnStatement;
 var FunctionExpression = syntax.FunctionExpression;
+var CallStatement = syntax.CallStatement;
 
 var continuationIdentifier = 'cont';
+var continuationStatement = new CallStatement(new Identifier(continuationIdentifier), []);
 
 var filename = process.argv[2];
 
 fs.readFile(filename, 'utf-8', function(err, text) {
+  transform(text);
+});
+
+function transform(code) {
   var options = {
     //loc: true,
     comment: true,
   };
-  var ast = esprima.parse(text, options);
-  transform(ast);
-});
-
-function transform(ast) {
-  //console.log(util.inspect(ast, false, null, true));
+  var ast = esprima.parse(code, options);
   transformBlock(ast);
   console.log(escodegen.generate(ast));
 }
@@ -184,10 +185,8 @@ function transformIf(statement, place) {
   var alternateRes = transformBlock(statement.alternate);
   
   if (consequentRes.async || alternateRes.async) {
-    var nextStatement = new ExpressionStatement(new CallExpression(new Identifier(continuationIdentifier), []));
-    
-    consequentRes.place.push(nextStatement);
-    alternateRes.place.push(nextStatement);
+    consequentRes.place.push(continuationStatement);
+    alternateRes.place.push(continuationStatement);
     
     var nextPlace = [];
     place.push(makeCPS([statement], nextPlace));
@@ -216,28 +215,14 @@ function transformWhile(statement, place) {
 
   if (blockRes.async) {
     var loopFunctionName = getLoopFunctionName();
-    var nextStatement = {
-      type: 'ExpressionStatement',
-      expression: {
-        type: 'CallExpression',
-        callee: {type: 'Identifier', name: loopFunctionName},
-        arguments: [{type: 'Identifier', name: continuationIdentifier}],
-      },
-    };
+    var nextStatement = new CallStatement(new Identifier(loopFunctionName), [new Identifier(continuationIdentifier)]);
     blockRes.place.push(nextStatement);
     
     var body = new BlockStatement([{
       type: 'IfStatement',
       test: statement.test,
       consequent: statement.body,
-      alternate: new BlockStatement([
-        new ExpressionStatement(
-          new CallExpression(
-            new Identifier(continuationIdentifier),
-            []
-          )
-        )
-      ]),
+      alternate: new BlockStatement([continuationStatement]),
     }]);
     
     place.push(new FunctionDeclaration(
@@ -247,22 +232,10 @@ function transformWhile(statement, place) {
     ));
     
     var nextPlace = [];
-    place.push({
-      type: 'ExpressionStatement',
-      expression: {
-        type: 'CallExpression',
-        callee: {type: 'Identifier', name:loopFunctionName},
-        arguments: [{
-          type: 'FunctionExpression',
-          id: null,
-          params: [],
-          body: {
-            type: 'BlockStatement',
-            body: nextPlace,
-          },
-        }],
-      },
-    });
+    place.push(new CallStatement(
+      new Identifier(loopFunctionName),
+      [new FunctionExpression(null, [], new BlockStatement(nextPlace))]
+    ));
     return nextPlace;
   }
   
@@ -273,73 +246,35 @@ function transformWhile(statement, place) {
 function transformFor(statement, place) {
   statement.type = 'WhileStatement';
   if (statement.body.type !== 'BlockStatement') {
-    statement.body = {
-      type: 'BlockStatement',
-      body: [statement.body],
-    };
+    statement.body = new BlockStatement([statement.body]);
   }
-  statement.body.body.push({
-    type: 'ExpressionStatement',
-    expression:statement.update,
-  });
+  statement.body.body.push(new ExpressionStatement(statement.update));
   place.push(statement.init);
   place = transformWhile(statement, place);
   return place;
-};
-
-function makeCallbackFunction(name, body) {
-  return {
-    type: 'FunctionDeclaration',
-    id: {type: 'Identifier', name: name},
-    params: [{type: 'Identifier', name: continuationIdentifier}],
-    body: {
-      type: 'BlockStatement',
-      body: body,
-    },
-  };
 }
 
-function makeFunctionCall(name, args, transformed) {
-  var statement = {
-    type: 'ExpressionStatement',
-    expression: {
-      type: 'CallExpression',
-      callee: {type: 'Identifier', name: name},
-      arguments: args,
-    },
-  };
-  if (transformed) {
-    statement.transformed = transformed;
-  }
-  return statement;
+function makeCallbackFunction(name, body) {
+  return new FunctionDeclaration(
+    new Identifier(name),
+    [new Identifier(continuationIdentifier)],
+    new BlockStatement(body)
+  );
 }
 
 function makeCPS(innerPlace, nextPlace) {
-  var statement = {
-    type: 'ExpressionStatement',
-    expression: {
-      type: 'CallExpression',
-      callee: {
-        type: 'FunctionExpression',
-        id: null,
-        params: [{type: 'Identifier', name: continuationIdentifier}],
-        body: {
-          type: 'BlockStatement',
-          body: innerPlace,
-        },
-      },
-      arguments: [{
-        type: 'FunctionExpression',
-        id: null,
-        params: [],
-        body: {
-          type: 'BlockStatement',
-          body: nextPlace,
-        },
-      }],
-    },
-  };
-  return statement;
+  return new CallStatement(
+    new FunctionExpression(
+      null,
+      [new Identifier(continuationIdentifier)],
+      new BlockStatement(innerPlace)
+    ),
+    [new FunctionExpression(
+      null,
+      [],
+      new BlockStatement(nextPlace)
+    )]
+  );
 }
 
 function transformSwitch(statement, place) {
@@ -367,9 +302,9 @@ function transformSwitch(statement, place) {
   //Replace statements in cases with case function calls
   statement.cases.forEach(function (sCase, index) {
     var name = 'case_' + index;
-    var callbackStatement = makeFunctionCall(name, [{type: 'Identifier', name: continuationIdentifier}]);
+    var continuationExpression = new CallExpression(new Identifier(name), [new Identifier(continuationIdentifier)]);
     sCase.consequent = [
-      new ReturnStatement(callbackStatement.expression),
+      new ReturnStatement(continuationExpression),
     ];
   });
   
@@ -382,15 +317,15 @@ function transformSwitch(statement, place) {
     place.forEach(function (statement, i) {
       //Transform break statement into continuation()
       if (statement.type === 'BreakStatement') {
-        place[i] = makeFunctionCall(continuationIdentifier, [], 'continuation');
+        place[i] = continuationStatement;
       }
     });
-    if (place.length === 0 || place[place.length - 1].transformed !== 'continuation') {
-      //No break in the end, fall back into next case function
+    if (place.length === 0 || !isContinuationStatement(place[place.length - 1])) {
+      //No break in the end, fall through into next case function
       if (nextFunc !== null) {
-        place.push(makeFunctionCall(nextFunc.id.name, [{type: 'Identifier', name: continuationIdentifier}], 'continuation'));
+        place.push(new CallStatement(nextFunc.id, [new Identifier(continuationIdentifier)]));
       } else {
-        place.push(makeFunctionCall(continuationIdentifier, [], 'continuation'));
+        place.push(continuationStatement);
       }
     }
   });
@@ -408,4 +343,10 @@ function transformFunctionDeclaration(statement, place) {
   transformBlock(statement.body);
   place.push(statement);
   return place;
+}
+
+function isContinuationStatement(statement) {
+  return statement.type === 'ExpressionStatement' &&
+    statement.expression.type === 'CallExpression' &&
+    statement.expression.callee.name === continuationIdentifier;
 }

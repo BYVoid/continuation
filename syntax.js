@@ -48,6 +48,15 @@ exports.CallExpression = function(callee, args) {
   this.arguments = args;
 };
 
+exports.CallStatement = function(callee, args) {
+  this.type = 'ExpressionStatement';
+  this.expression = {
+    type: 'CallExpression',
+    callee: callee,
+    arguments: args,
+  };
+};
+
 exports.ReturnStatement = function(expression) {
   this.type = 'ReturnStatement';
   this.argument = expression;

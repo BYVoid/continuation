@@ -1,0 +1,18 @@
+{
+  "name": "continuation",
+  "version": "0.0.0",
+  "description": "continuation.js is a compiler for asynchronous continuation-passing-style transformation.",
+  "main": "continuation.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "keywords": [
+    "continuation"
+  ],
+  "author": "BYVoid",
+  "license": "BSD"
+}

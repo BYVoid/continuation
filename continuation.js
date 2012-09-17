@@ -41,10 +41,8 @@ function transformBlock(block) {
   for (var i = 0; i < block.body.length; i++) {
     var statement = block.body[i];
     var newPlace = place;
-    if (statement.type === 'ExpressionStatement' && statement.expression.type === 'CallExpression') {
-      newPlace = transformCall(statement, place);
-    } else if (statement.type === 'ExpressionStatement' && statement.expression.type === 'AssignmentExpression') {
-      newPlace = transformAssignment(statement, place);
+    if (statement.type === 'ExpressionStatement') {
+      newPlace = transformExpressionStatement(statement, place);
     } else if (statement.type === 'VariableDeclaration') {
       newPlace = transformDeclarations(statement, place);
     } else if (statement.type === 'IfStatement') {
@@ -107,7 +105,27 @@ function continuationToCallback(args) {
   }
 }
 
+function transformExpressionStatement(statement, place) {
+  if (statement.expression.type === 'CallExpression') {
+    return transformCall(statement, place);
+  }
+  if (statement.expression.type === 'AssignmentExpression') {
+    return transformAssignment(statement, place);
+  }
+  
+  if (statement.expression.type === 'FunctionExpression') {
+    transformBlock(statement.expression.body);
+  }
+  
+  place.push(statement);
+  return place;
+}
+
 function transformCall(statement, place) {
+  if (statement.expression.callee.type === 'FunctionExpression') {
+    transformBlock(statement.expression.callee.body);
+  }
+  
   var newPlace = continuationToCallback(statement.expression.arguments);
   place.push(statement);
   if (newPlace) {

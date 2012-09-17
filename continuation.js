@@ -13,8 +13,10 @@ var BlockStatement = syntax.BlockStatement;
 var FunctionDeclaration = syntax.FunctionDeclaration;
 var ExpressionStatement = syntax.ExpressionStatement;
 var CallExpression = syntax.CallExpression;
+var ReturnStatement = syntax.ReturnStatement;
+var FunctionExpression = syntax.FunctionExpression;
 
-var continuationIdentifier = 'continuation';
+var continuationIdentifier = 'cont';
 
 var filename = process.argv[2];
 
@@ -92,15 +94,11 @@ function continuationToCallback(args) {
     });
     
     //Replace continuation with a callback function
-    args[contPos] = {
-      type: 'FunctionExpression',
-      id: null,
-      params: [],
-      body: {
-        type: 'BlockStatement',
-        body: callbackBlock,
-      }
-    };
+    args[contPos] = new FunctionExpression(
+      null,
+      [],
+      new BlockStatement(callbackBlock)
+    );
     return callbackBlock;
   }
 }
@@ -174,35 +172,20 @@ function transformDeclarations(statement, place) {
 
 function transformIf(statement, place) {
   if (statement.consequent.type !== 'BlockStatement') {
-    statement.consequent = {
-      type: 'BlockStatement',
-      body: [statement.consequent],
-    };
+    statement.consequent = new BlockStatement([statement.consequent]);
   }
   var consequentRes = transformBlock(statement.consequent);
   
   if (statement.alternate === null) {
-    statement.alternate = {
-      type: 'BlockStatement',
-      body: [],
-    };
+    statement.alternate = new BlockStatement([]);
   } else if (statement.alternate.type !== 'BlockStatement') {
-    statement.alternate = {
-      type: 'BlockStatement',
-      body: [statement.alternate],
-    };
+    statement.alternate = new BlockStatement([statement.alternate]);
   }
   var alternateRes = transformBlock(statement.alternate);
   
   if (consequentRes.async || alternateRes.async) {
-    var nextStatement = {
-      type: 'ExpressionStatement',
-      expression: {
-        type: 'CallExpression',
-        callee: {type: 'Identifier', name: continuationIdentifier},
-        arguments: [],
-      },
-    };
+    var nextStatement = new ExpressionStatement(new CallExpression(new Identifier(continuationIdentifier), []));
+    
     consequentRes.place.push(nextStatement);
     alternateRes.place.push(nextStatement);
     
@@ -359,13 +342,6 @@ function makeCPS(innerPlace, nextPlace) {
   return statement;
 }
 
-function makeReturnStatement(expression) {
-  return {
-    type: 'ReturnStatement',
-    argument: expression,
-  };
-}
-
 function transformSwitch(statement, place) {
   var innerPlace = [];
   var caseFunctions = [];
@@ -393,7 +369,7 @@ function transformSwitch(statement, place) {
     var name = 'case_' + index;
     var callbackStatement = makeFunctionCall(name, [{type: 'Identifier', name: continuationIdentifier}]);
     sCase.consequent = [
-      makeReturnStatement(callbackStatement.expression),
+      new ReturnStatement(callbackStatement.expression),
     ];
   });
   

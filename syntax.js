@@ -28,7 +28,7 @@ exports.Assignment = function(left, right) {
 exports.BlockStatement = function (body) {
   this.type = 'BlockStatement';
   this.body = body;
-}
+};
 
 exports.FunctionDeclaration = function(id, params, body) {
   this.type = 'FunctionDeclaration';
@@ -46,5 +46,16 @@ exports.CallExpression = function(callee, args) {
   this.type = 'CallExpression';
   this.callee = callee;
   this.arguments = args;
-}
+};
 
+exports.ReturnStatement = function(expression) {
+  this.type = 'ReturnStatement';
+  this.argument = expression;
+};
+
+exports.FunctionExpression = function(id, params, body) {
+  this.type = 'FunctionExpression';
+  this.id = id;
+  this.params = params;
+  this.body = body;
+};

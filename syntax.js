@@ -68,3 +68,9 @@ exports.FunctionExpression = function(id, params, body) {
   this.params = params;
   this.body = body;
 };
+
+exports.VariableDeclaration = function(declarations, kind) {
+  this.type = 'VariableDeclaration';
+  this.declarations = declarations;
+  this.kind = kind;
+};

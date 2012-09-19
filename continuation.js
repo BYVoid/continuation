@@ -32,8 +32,19 @@ function transform(code) {
     comment: true,
   };
   var ast = esprima.parse(code, options);
+  normalizeBlock(ast);
   transformBlock(ast);
   console.log(escodegen.generate(ast));
+}
+
+function normalizeBlock(block) {
+  for (var i = 0; i < block.body.length; i++) {
+    var statement = block.body[i];
+    if (statement.type === 'IfStatement') {
+      statement = normalizeIf(statement);
+    }
+    block.body[i] = statement;
+  }
 }
 
 function transformBlock(block) {
@@ -171,30 +182,82 @@ function transformDeclarations(statement, place) {
   return place;
 }
 
-function transformIf(statement, place) {
+function reduceDeclarations(declarations) {
+  var decMap = {};
+  declarations.forEach(function (dec) {
+    decMap[dec.id.name] = dec;
+  });
+  declarations = [];
+  Object.keys(decMap).forEach(function (name) {
+    var dec = decMap[name];
+    dec.init = null;
+    declarations.push(dec);
+  });
+  return declarations;
+}
+
+function extractVariableDeclarations(block, declarations) {
+  var normalStatements = [];
+  block.body.forEach(function (statement) {
+    if (statement.type === 'VariableDeclaration') {
+      statement.declarations.forEach(function (dec) {
+        declarations.push(dec);
+        if (dec.init !== null) {
+          normalStatements.push(new Assignment(dec.id, dec.init));
+        }
+      });
+    } else {
+      normalStatements.push(statement);
+    }
+  });
+  block.body = normalStatements;
+}
+
+function normalizeIf(statement) {
+  //Add block statement
   if (statement.consequent.type !== 'BlockStatement') {
     statement.consequent = new BlockStatement([statement.consequent]);
   }
-  var consequentRes = transformBlock(statement.consequent);
-  
+  normalizeBlock(statement.consequent);
   if (statement.alternate === null) {
     statement.alternate = new BlockStatement([]);
   } else if (statement.alternate.type !== 'BlockStatement') {
     statement.alternate = new BlockStatement([statement.alternate]);
   }
+  normalizeBlock(statement.alternate);
+  
+  //Move variable declarations outside
+  var body = [];
+  var newStatement = new BlockStatement(body);
+  
+  var declarations = [];
+  
+  extractVariableDeclarations(statement.consequent, declarations);
+  extractVariableDeclarations(statement.alternate, declarations);
+  
+  declarations = reduceDeclarations(declarations);
+  
+  body.push(new syntax.VariableDeclaration(declarations, 'var'));
+  body.push(statement);
+  return newStatement;
+}
+
+function transformIf(statement, place) {
+  var consequentRes = transformBlock(statement.consequent);
   var alternateRes = transformBlock(statement.alternate);
   
-  if (consequentRes.async || alternateRes.async) {
-    consequentRes.place.push(continuationStatement);
-    alternateRes.place.push(continuationStatement);
-    
-    var nextPlace = [];
-    place.push(makeCPS([statement], nextPlace));
-    return nextPlace;
+  //Not transfrom if no async calls
+  if (!consequentRes.async && !alternateRes.async) {
+    place.push(statement);
+    return place;
   }
   
-  place.push(statement);
-  return place;
+  consequentRes.place.push(continuationStatement);
+  alternateRes.place.push(continuationStatement);
+  
+  var nextPlace = [];
+  place.push(makeCPS([statement], nextPlace));
+  return nextPlace;
 }
 
 var loopCount = 0;

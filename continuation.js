@@ -38,13 +38,16 @@ function transform(code) {
 }
 
 function normalizeBlock(block) {
+  var body = [];
   for (var i = 0; i < block.body.length; i++) {
     var statement = block.body[i];
     if (statement.type === 'IfStatement') {
-      statement = normalizeIf(statement);
+      normalizeIf(statement, body);
+    } else {
+      body.push(statement);
     }
-    block.body[i] = statement;
   }
+  block.body = body;
 }
 
 function transformBlock(block) {
@@ -213,7 +216,7 @@ function extractVariableDeclarations(block, declarations) {
   block.body = normalStatements;
 }
 
-function normalizeIf(statement) {
+function normalizeIf(statement, place) {
   //Add block statement
   if (statement.consequent.type !== 'BlockStatement') {
     statement.consequent = new BlockStatement([statement.consequent]);
@@ -227,19 +230,13 @@ function normalizeIf(statement) {
   normalizeBlock(statement.alternate);
   
   //Move variable declarations outside
-  var body = [];
-  var newStatement = new BlockStatement(body);
-  
   var declarations = [];
-  
   extractVariableDeclarations(statement.consequent, declarations);
   extractVariableDeclarations(statement.alternate, declarations);
-  
   declarations = reduceDeclarations(declarations);
   
-  body.push(new syntax.VariableDeclaration(declarations, 'var'));
-  body.push(statement);
-  return newStatement;
+  place.push(new syntax.VariableDeclaration(declarations, 'var'));
+  place.push(statement);
 }
 
 function transformIf(statement, place) {

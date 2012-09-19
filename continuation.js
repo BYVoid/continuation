@@ -304,43 +304,72 @@ function getLoopFunctionName() {
   return name;
 }
 
-function transformWhile(statement, place) {
-  if (statement.body.type !== 'BlockStatement') {
-    statement.body = {
-      type: 'BlockStatement',
-      body: [statement.body],
-    };
+function transformWhileBreak(block, continuationExpression) {
+  //console.log(block.body);
+  for (var i = 0; i < block.body.length; i++) {
+    var statement = block.body[i];
+    if (statement.type === 'BreakStatement') {
+      statement = new ReturnStatement(continuationExpression);
+    } else if (statement.type === 'ExpressionStatement') {
+      var expression = statement.expression;
+      if (expression.type === 'CallExpression') {
+        if (expression.callee.type === 'FunctionExpression') {
+          transformWhileBreak(expression.callee.body, continuationExpression);
+        }
+        expression.arguments.forEach(function (argument) {
+          if (argument.type === 'FunctionExpression') {
+            transformWhileBreak(argument.body, continuationExpression);
+          }
+        });
+        
+      }
+    } else if (statement.type === 'IfStatement') {
+      transformWhileBreak(statement.consequent, continuationExpression);
+      transformWhileBreak(statement.alternate, continuationExpression);
+    }
+    
+    block.body[i] = statement;
   }
+}
+
+function transformWhile(statement, place) {
+  assert(statement.body.type === 'BlockStatement');
   var blockRes = transformBlock(statement.body);
 
-  if (blockRes.async) {
-    var loopFunctionName = getLoopFunctionName();
-    var nextStatement = new CallStatement(new Identifier(loopFunctionName), [new Identifier(continuationIdentifier)]);
-    blockRes.place.push(nextStatement);
-    
-    var body = new BlockStatement([{
-      type: 'IfStatement',
-      test: statement.test,
-      consequent: statement.body,
-      alternate: new BlockStatement([continuationStatement]),
-    }]);
-    
-    place.push(new FunctionDeclaration(
-      new Identifier(loopFunctionName),
-      [new Identifier(continuationIdentifier)],
-      body
-    ));
-    
-    var nextPlace = [];
-    place.push(new CallStatement(
-      new Identifier(loopFunctionName),
-      [new FunctionExpression(null, [], new BlockStatement(nextPlace))]
-    ));
-    return nextPlace;
+  if (!blockRes.async) {
+    place.push(statement);
+    return place;
   }
   
-  place.push(statement);
-  return place;
+  var loopFunctionName = getLoopFunctionName();
+  var continuationName = loopFunctionName + '_' + continuationIdentifier;
+  
+  var nextStatement = new CallStatement(new Identifier(loopFunctionName), [new Identifier(continuationName)]);
+  blockRes.place.push(nextStatement);
+  
+  var continuationStatement = new CallStatement(new Identifier(continuationName), []);
+  
+  var body = new BlockStatement([{
+    type: 'IfStatement',
+    test: statement.test,
+    consequent: statement.body,
+    alternate: new BlockStatement([continuationStatement]),
+  }]);
+  
+  transformWhileBreak(statement.body, continuationStatement.expression);
+  
+  place.push(new FunctionDeclaration(
+    new Identifier(loopFunctionName),
+    [new Identifier(continuationName)],
+    body
+  ));
+  
+  var nextPlace = [];
+  place.push(new CallStatement(
+    new Identifier(loopFunctionName),
+    [new FunctionExpression(null, [], new BlockStatement(nextPlace))]
+  ));
+  return nextPlace;
 }
 
 function makeCallbackFunction(name, body) {

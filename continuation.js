@@ -270,9 +270,22 @@ function normalizeFor(statement, place) {
   } else if (statement.body.type !== 'BlockStatement') {
     statement.body = new BlockStatement([statement.body]);
   }
-  statement.body.body.push(new ExpressionStatement(statement.update));
-
-  place.push(statement.init);
+  
+  if (statement.test === null) {
+    statement.test = new Literal(true);
+  }
+  
+  if (statement.update !== null) {
+    statement.body.body.push(new ExpressionStatement(statement.update));
+  }
+  
+  if (statement.init !== null) {
+    if (statement.init.type === 'AssignmentExpression') {
+      statement.init = new ExpressionStatement(statement.init);
+    }
+    place.push(statement.init);
+  }
+  
   delete statement.init;
   delete statement.update;
   

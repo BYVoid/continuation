@@ -1,5 +1,6 @@
 var fs = require('fs');
 var util = require('util');
+var assert = require('assert');
 var esprima = require('esprima');
 var esmangle = require('esmangle');
 var escodegen = require('escodegen');
@@ -43,6 +44,10 @@ function normalizeBlock(block) {
     var statement = block.body[i];
     if (statement.type === 'IfStatement') {
       normalizeIf(statement, body);
+    } else if (statement.type === 'ForStatement') {
+      normalizeFor(statement, body);
+    } else if (statement.type === 'WhileStatement') {
+      normalizeWhile(statement, body);
     } else {
       body.push(statement);
     }
@@ -67,7 +72,8 @@ function transformBlock(block) {
     } else if (statement.type === 'WhileStatement') {
       newPlace = transformWhile(statement, place);
     } else if (statement.type === 'ForStatement') {
-      newPlace = transformFor(statement, place);
+      //Should not be here
+      assert(false);
     } else if (statement.type === 'SwitchStatement') {
       newPlace = transformSwitch(statement, place);
     } else if (statement.type === 'FunctionDeclaration') {
@@ -239,6 +245,40 @@ function normalizeIf(statement, place) {
   place.push(statement);
 }
 
+function normalizeWhile(statement, place) {
+  if (statement.body === null) {
+    statement.body = new BlockStatement([]);
+  } else if (statement.body.type !== 'BlockStatement') {
+    statement.body = new BlockStatement([statement.body]);
+  }
+  
+  normalizeBlock(statement.body);
+  
+  //Move variable declarations outside
+  var declarations = [];
+  extractVariableDeclarations(statement.body, declarations);
+  declarations = reduceDeclarations(declarations);
+  
+  place.push(new syntax.VariableDeclaration(declarations, 'var'));
+  place.push(statement);
+}
+
+function normalizeFor(statement, place) {
+  statement.type = 'WhileStatement';
+  if (statement.body === null) {
+    statement.body = new BlockStatement([]);
+  } else if (statement.body.type !== 'BlockStatement') {
+    statement.body = new BlockStatement([statement.body]);
+  }
+  statement.body.body.push(new ExpressionStatement(statement.update));
+
+  place.push(statement.init);
+  delete statement.init;
+  delete statement.update;
+  
+  normalizeWhile(statement, place);
+}
+
 function transformIf(statement, place) {
   var consequentRes = transformBlock(statement.consequent);
   var alternateRes = transformBlock(statement.alternate);
@@ -300,17 +340,6 @@ function transformWhile(statement, place) {
   }
   
   place.push(statement);
-  return place;
-}
-
-function transformFor(statement, place) {
-  statement.type = 'WhileStatement';
-  if (statement.body.type !== 'BlockStatement') {
-    statement.body = new BlockStatement([statement.body]);
-  }
-  statement.body.body.push(new ExpressionStatement(statement.update));
-  place.push(statement.init);
-  place = transformWhile(statement, place);
   return place;
 }
 

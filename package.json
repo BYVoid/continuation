@@ -4,15 +4,19 @@
   "description": "continuation.js is a compiler for asynchronous continuation-passing-style transformation.",
   "main": "continuation.js",
   "directories": {
-    "test": "tests"
+    "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -R spec"
   },
   "repository": "",
   "keywords": [
     "continuation"
   ],
   "author": "BYVoid",
-  "license": "BSD"
+  "license": "BSD",
+  "dependencies": {
+    "esprima": "0.9.9",
+    "escodegen": "0.0.9"
+  }
 }

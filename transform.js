@@ -240,15 +240,17 @@ function transformSwitch(statement, place) {
   var caseResults = [];
   var async = false;
   //Make case function form cases
-  statement.cases.forEach(function (sCase, index) {
-    var name = 'case_' + index;
-    var func = makeCallbackFunction(name, sCase.consequent);
-    var res = transformBlock(func.body);
-    async = async || res.async;
-    caseResults.push(res);
-    caseFunctions.push(func);
-    innerPlace.push(func);
-  });
+  if (statement.cases) {
+    statement.cases.forEach(function (sCase, index) {
+      var name = 'case_' + index;
+      var func = makeCallbackFunction(name, sCase.consequent);
+      var res = transformBlock(func.body);
+      async = async || res.async;
+      caseResults.push(res);
+      caseFunctions.push(func);
+      innerPlace.push(func);
+    });
+  }
   
   if (!async) {
     //No need to transform

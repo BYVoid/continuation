@@ -35,6 +35,7 @@ function transform(code) {
   var ast = esprima.parse(code, options);
   normalizeBlock(ast);
   transformBlock(ast);
+  //console.log(util.inspect(ast, false, null, true));
   console.log(escodegen.generate(ast));
 }
 
@@ -48,11 +49,22 @@ function normalizeBlock(block) {
       normalizeFor(statement, body);
     } else if (statement.type === 'WhileStatement') {
       normalizeWhile(statement, body);
+    } else if (statement.type === 'SwitchStatement') {
+      normalizeSwitch(statement, body);
     } else {
       body.push(statement);
     }
   }
   block.body = body;
+}
+
+function normalizeSwitch(statement, body) {
+  statement.cases.forEach(function (sCase) {
+    var block = new BlockStatement(sCase.consequent);
+    normalizeBlock(block);
+    sCase.consequent = block.body;
+  });
+  body.push(statement);
 }
 
 function transformBlock(block) {
@@ -240,8 +252,9 @@ function normalizeIf(statement, place) {
   extractVariableDeclarations(statement.consequent, declarations);
   extractVariableDeclarations(statement.alternate, declarations);
   declarations = reduceDeclarations(declarations);
-  
-  place.push(new syntax.VariableDeclaration(declarations, 'var'));
+  if (declarations.length > 0) {
+    place.push(new syntax.VariableDeclaration(declarations, 'var'));
+  }
   place.push(statement);
 }
 
@@ -258,8 +271,9 @@ function normalizeWhile(statement, place) {
   var declarations = [];
   extractVariableDeclarations(statement.body, declarations);
   declarations = reduceDeclarations(declarations);
-  
-  place.push(new syntax.VariableDeclaration(declarations, 'var'));
+  if (declarations.length > 0) {
+    place.push(new syntax.VariableDeclaration(declarations, 'var'));
+  }
   place.push(statement);
 }
 
@@ -317,30 +331,26 @@ function getLoopFunctionName() {
   return name;
 }
 
-function transformWhileBreak(block, continuationExpression) {
-  //console.log(block.body);
+function traverse(block, func) {
   for (var i = 0; i < block.body.length; i++) {
     var statement = block.body[i];
-    if (statement.type === 'BreakStatement') {
-      statement = new ReturnStatement(continuationExpression);
-    } else if (statement.type === 'ExpressionStatement') {
+    if (statement.type === 'ExpressionStatement') {
       var expression = statement.expression;
       if (expression.type === 'CallExpression') {
         if (expression.callee.type === 'FunctionExpression') {
-          transformWhileBreak(expression.callee.body, continuationExpression);
+          traverse(expression.callee.body, func);
         }
         expression.arguments.forEach(function (argument) {
           if (argument.type === 'FunctionExpression') {
-            transformWhileBreak(argument.body, continuationExpression);
+            traverse(argument.body, func);
           }
         });
-        
       }
     } else if (statement.type === 'IfStatement') {
-      transformWhileBreak(statement.consequent, continuationExpression);
-      transformWhileBreak(statement.alternate, continuationExpression);
+      traverse(statement.consequent, func);
+      traverse(statement.alternate, func);
     }
-    
+    statement = func(statement);
     block.body[i] = statement;
   }
 }
@@ -369,7 +379,12 @@ function transformWhile(statement, place) {
     alternate: new BlockStatement([continuationStatement]),
   }]);
   
-  transformWhileBreak(statement.body, continuationStatement.expression);
+  traverse(statement.body, function (statement) {
+    if (statement.type === 'BreakStatement') {
+      statement = new ReturnStatement(continuationStatement.expression);
+    } 
+    return statement;
+  });
   
   place.push(new FunctionDeclaration(
     new Identifier(loopFunctionName),
@@ -459,6 +474,13 @@ function transformSwitch(statement, place) {
         place.push(continuationStatement);
       }
     }
+    
+    traverse(func.body, function (statement) {
+      if (statement.type === 'BreakStatement') {
+        statement = new ReturnStatement(continuationStatement.expression);
+      } 
+      return statement;
+    });
   });
   
   //Add switch statement into inner place

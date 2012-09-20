@@ -1,0 +1,12 @@
+exports.Literal = require('./Literal');
+exports.Identifier = require('./Identifier');
+exports.MemberExpression = require('./MemberExpression');
+exports.Assignment = require('./Assignment');
+exports.BlockStatement = require('./BlockStatement');
+exports.FunctionDeclaration = require('./FunctionDeclaration');
+exports.ExpressionStatement = require('./ExpressionStatement');
+exports.CallExpression = require('./CallExpression');
+exports.CallStatement = require('./CallStatement');
+exports.ReturnStatement = require('./ReturnStatement');
+exports.FunctionExpression = require('./FunctionExpression');
+exports.VariableDeclaration = require('./VariableDeclaration');

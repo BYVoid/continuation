@@ -18,7 +18,7 @@ var normalizeBlock = exports.normalizeBlock = function (block) {
     }
   }
   block.body = body;
-}
+};
 
 function normalizeSwitch(statement, body) {
   statement.cases.forEach(function (sCase) {

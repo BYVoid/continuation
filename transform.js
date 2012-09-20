@@ -1,5 +1,6 @@
 var assert = require('assert');
 var syntax = require('./syntax');
+var traverse = require('./traverse');
 
 var continuationIdentifier = 'cont';
 var continuationStatement = new syntax.CallStatement(new syntax.Identifier(continuationIdentifier), []);
@@ -40,7 +41,7 @@ var transformBlock = exports.transformBlock = function (block) {
     async: async,
     place: place,
   };
-}
+};
 
 function findContinuation(args) {
   //Todo check multiple continuations && defer
@@ -163,30 +164,6 @@ function getLoopFunctionName() {
   var name = 'loop_' + loopCount;
   loopCount ++;
   return name;
-}
-
-function traverse(block, func) {
-  for (var i = 0; i < block.body.length; i++) {
-    var statement = block.body[i];
-    if (statement.type === 'ExpressionStatement') {
-      var expression = statement.expression;
-      if (expression.type === 'CallExpression') {
-        if (expression.callee.type === 'FunctionExpression') {
-          traverse(expression.callee.body, func);
-        }
-        expression.arguments.forEach(function (argument) {
-          if (argument.type === 'FunctionExpression') {
-            traverse(argument.body, func);
-          }
-        });
-      }
-    } else if (statement.type === 'IfStatement') {
-      traverse(statement.consequent, func);
-      traverse(statement.alternate, func);
-    }
-    statement = func(statement);
-    block.body[i] = statement;
-  }
 }
 
 function transformWhile(statement, place) {

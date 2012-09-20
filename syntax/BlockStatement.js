@@ -16,6 +16,8 @@ BlockStatement.prototype.normalize = function () {
       statement.normalize(body);
     } else if (statement.type === 'SwitchStatement') {
       statement.normalize(body);
+    } else if (statement.type === 'ExpressionStatement') {
+      statement.normalize(body);
     } else {
       body.push(statement);
     }

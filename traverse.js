@@ -10,11 +10,11 @@ var traverse = module.exports = function(statement, func) {
       var expression = statement.expression;
       if (expression.type === 'CallExpression') {
         if (expression.callee.type === 'FunctionExpression') {
-          traverse(expression.callee.body, func);
+          expression.callee.body = traverse(expression.callee.body, func);
         }
-        expression.arguments.forEach(function (argument) {
+        expression.arguments.forEach(function (argument, i) {
           if (argument.type === 'FunctionExpression') {
-            traverse(argument.body, func);
+            expression.arguments[i].body = traverse(argument.body, func);
           }
         });
       }

@@ -1,22 +1,36 @@
 {
   "name": "continuation",
   "version": "0.0.0",
-  "description": "continuation.js is a compiler for asynchronous continuation-passing-style transformation.",
+  "description": "Continuation.js is a compiler for asynchronous continuation-passing-style transformation",
+  "author": "BYVoid",
+  "license": "BSD",
   "main": "continuation.js",
+  "bin": {
+    "continuation": "./bin/continuation"
+  },
   "directories": {
+    "lib": "lib",
+    "bin": "bin",
     "test": "test"
   },
   "scripts": {
     "test": "mocha -R spec"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/BYVoid/continuation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BYVoid/continuation/issues"
+  },
   "keywords": [
     "continuation"
   ],
-  "author": "BYVoid",
-  "license": "BSD",
   "dependencies": {
     "esprima": "0.9.9",
     "escodegen": "0.0.9"
+  },
+  "devDependencies": {
+    "mocha": "1.4.2"
   }
 }

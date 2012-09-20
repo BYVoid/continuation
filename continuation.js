@@ -1,5 +1,4 @@
 var util = require('util');
-var esmangle = require('esmangle');
 var escodegen = require('escodegen');
 
 var parser = require('./lib/parser');

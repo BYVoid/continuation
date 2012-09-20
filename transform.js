@@ -95,6 +95,12 @@ function transformCall(statement, place) {
     transformBlock(statement.expression.callee.body);
   }
   
+  statement.expression.arguments.forEach(function (expression) {
+    if (expression.type === 'FunctionExpression') {
+      transformBlock(expression.body);
+    }
+  });
+  
   var newPlace = continuationToCallback(statement.expression.arguments);
   place.push(statement);
   if (newPlace) {

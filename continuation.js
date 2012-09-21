@@ -2,12 +2,11 @@ var util = require('util');
 var escodegen = require('escodegen');
 
 var parser = require('./lib/parser');
-var transform = require('./lib/transform');
 
 exports.transform = function (code) {
   var ast = parser.parse(code);
   ast.normalize();
   //console.log(util.inspect(ast, false, null, true));
-  transform.transformBlock(ast);
+  ast.transform();
   return escodegen.generate(ast);
 };

@@ -1,18 +1,18 @@
 var i = 0;
-function loop_1(loop_1_cont) {
+function loop_0(loop_0_cont) {
     if (true) {
         setTimeout(function () {
             console.log('hello');
             if (i == 5) {
-                return loop_1_cont();
+                return loop_0_cont();
             } else {
             }
             i++;
-            loop_1(loop_1_cont);
+            loop_0(loop_0_cont);
         }, 200);
     } else {
-        loop_1_cont();
+        loop_0_cont();
     }
 }
-loop_1(function () {
+loop_0(function () {
 });

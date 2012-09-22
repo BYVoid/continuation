@@ -4,6 +4,7 @@ var path = require('path');
 var continuation = require('../continuation');
 
 var files = [
+  'fib.js',
   'if.js',
   'ifvar.js',
   'loop.js',

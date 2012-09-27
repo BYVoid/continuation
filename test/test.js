@@ -14,6 +14,7 @@ var files = [
   'switch.js',
   'switchbreak.js',
   'whilebreak.js',
+  'continue.js',
 ];
 
 var test = function(filename, done) {

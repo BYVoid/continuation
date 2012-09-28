@@ -1,11 +1,52 @@
 #!/usr/bin/env node
 
 var fs = require('fs');
+var commander = require('commander');
+var meta = require('../package.json');
 var continuation = require('../continuation');
 
-var filename = process.argv[2];
+commander.version(meta.version);
+commander.usage('[options] <file.js> [arguments]');
+commander.option('-c, --compile', 'only compile script file and print it');
+commander.option('-o, --output <filename>', 'compile script file and save as <filename>, implies --compile');
+commander.parse(process.argv);
+
+var compile = false;
+if (commander.compile)
+  compile = true;
+if (commander.output)
+  compile = true;
+
+var filename = fs.realpathSync(commander.args[0]);
 
 fs.readFile(filename, 'utf-8', function(err, text) {
+  if (err) throw err;
   var code = continuation.transform(text);
-  console.log(code);
+  if (compile) {
+    outputCode(code);
+  } else {
+    runCode(code);
+  }
 });
+
+var outputCode = function (code) {
+  if (commander.output) {
+    fs.writeFile(commander.output, code, function (err) {
+      if (err) throw err;
+    });
+  } else {
+    console.log(code);
+  }
+};
+
+var runCode = function (code) {
+  var mainModule = require.main;
+  mainModule.filename = filename;
+  mainModule.moduleCache = {};
+  mainModule.children = [];
+  
+  var args = commander.args.slice(1);
+  process.argv = [process.argv[0], filename].concat(args);
+  
+  mainModule._compile(code, filename);
+};

@@ -1,9 +1,10 @@
 var fib = function () {
     var a = 0;
     var current = 1;
+    var b;
     function loop_0(loop_0_cont) {
         if (true) {
-            var b = a;
+            b = a;
             a = current;
             current = a + b;
             setTimeout(function () {

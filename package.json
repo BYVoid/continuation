@@ -1,6 +1,6 @@
 {
   "name": "continuation",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Continuation.js is a compiler for asynchronous continuation-passing-style transformation",
   "author": "BYVoid",
   "license": "BSD",
@@ -31,6 +31,6 @@
     "escodegen": "0.0.9"
   },
   "devDependencies": {
-    "mocha": "1.4.2"
+    "mocha": "1.5.0"
   }
 }

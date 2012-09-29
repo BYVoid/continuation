@@ -16,6 +16,7 @@ var files = [
   'whilebreak.js',
   'continue.js',
   'factor.js',
+  'pi.js',
   'diskusage.js',
 ];
 

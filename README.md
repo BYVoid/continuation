@@ -26,7 +26,6 @@ While using Continuation.js, you write:
 
 ```javascript
 function textProcessing(callback) {
-  var err, contents, contents2;
   fs.readFile('somefile.txt', 'utf-8', continuation(err, contents));
   if (err) return callback(err);
   contents = contents.toUpperCase();
@@ -44,7 +43,6 @@ Or even simpler:
 ```javascript
 function textProcessing(callback) {
   try {
-    var contents, contents2;
     fs.readFile('somefile.txt', 'utf-8', defer(contents));
     contents = contents.toUpperCase();
     fs.readFile('somefile2.txt', 'utf-8', defer(contents2));

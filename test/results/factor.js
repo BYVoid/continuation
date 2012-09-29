@@ -3,9 +3,8 @@ var factor = function (n, callback) {
         return callback(1);
     } else {
     }
-    var rest;
     factor(n - 1, function () {
-        rest = arguments[0];
+        var rest = arguments[0];
         setTimeout(function () {
             console.log(rest);
             callback(n * rest);

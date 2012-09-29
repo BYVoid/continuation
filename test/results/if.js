@@ -5,8 +5,8 @@
         } else {
         }
         fs.readFile('e.js', function () {
-            err = arguments[0];
-            text = arguments[1];
+            var err = arguments[0];
+            var text = arguments[1];
             cont();
         });
     } else {
@@ -14,8 +14,8 @@
             (function (cont) {
                 if (c == 1) {
                     fs.readFile('e.js', function () {
-                        err = arguments[0];
-                        text = arguments[1];
+                        var err = arguments[0];
+                        var text = arguments[1];
                         cont();
                     });
                 } else {

@@ -5,15 +5,15 @@
     }
     function case_1(cont) {
         fs.readFile('e.js', function () {
-            err = arguments[0];
-            text = arguments[1];
+            var err = arguments[0];
+            var text = arguments[1];
             cont();
         });
     }
     function case_2(cont) {
         fs.readFile('e.js', function () {
-            err = arguments[0];
-            text = arguments[1];
+            var err = arguments[0];
+            var text = arguments[1];
             case_3(cont);
         });
     }

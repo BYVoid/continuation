@@ -4,9 +4,7 @@ var path = require('path');
 var continuation = require('../continuation');
 
 var files = [
-  'seq1.js',
-  'seq2.js',
-  'seq3.js',
+  'readfile.js',
   'fib.js',
   'if.js',
   'ifvar.js',

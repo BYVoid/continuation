@@ -16,7 +16,9 @@ var files = [
   'factor.js',
   'pi.js',
   'diskusage.js',
-  'try.js',
+  'try_body.js',
+  'try_catch.js',
+  'try_both.js',
 ];
 
 var test = function(filename, done) {

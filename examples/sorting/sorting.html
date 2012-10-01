@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title>Sorting Animations - Wind.js Sample</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    
+    <script src="sorting.c.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+</head>
+<body style="margin:5px;">
+    <p id="controllers">
+        <select id="comboNames"></select>
+        <input id="btnSort" type="button" value="Sort" />
+    </p>
+    
+    <canvas id="canvas" height="300" width="300">
+        <span style="font-size:20pt;">Your browser doesn't support canvas.</span>
+    </canvas>
+    
+    <script>
+        var sa = new SortingAnimations($("#canvas")[0]);
+        var btnSort = $("#btnSort");
+        
+        if (sa.supported) {
+            var comboNames = $("#comboNames");
+            $.each(sa.names, function (_, name) {
+                comboNames.append($("<option></option>").attr("value", name).text(name));
+            });
+            
+            var array = sa.randomArray();
+            
+            btnSort.click(function () {
+                btnSort.attr("disabled", "disabled");
+                comboNames.attr("disabled", "disable");
+                
+                if (array.sorted) {
+                    array = sa.randomArray();
+                }
+
+                sa.sortAsync(comboNames.val(), array, function () {
+                    array.sorted = true;
+                    btnSort.removeAttr("disabled");
+                    comboNames.removeAttr("disabled");
+                });
+            });
+            
+            sa.paint(array);
+        } else {
+            $("#controllers").css("display", "none");
+        }
+    </script>
+</body>
+</html>
+

@@ -20,6 +20,7 @@ var files = [
   'try_catch.js',
   'try_both.js',
   'list.js',
+  'defer.js',
 ];
 
 var test = function(filename, done) {

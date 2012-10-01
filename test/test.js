@@ -19,6 +19,7 @@ var files = [
   'try_body.js',
   'try_catch.js',
   'try_both.js',
+  'list.js',
 ];
 
 var test = function(filename, done) {

@@ -1,12 +1,12 @@
 var fs = require('fs');
 function calcDirSize(path, callback) {
+    var filename;
     var dirSize = 0;
     var dirBlockSize = 0;
     fs.readdir(path, function () {
         var err = arguments[0];
         var files = arguments[1];
         var i = 0;
-        var filename;
         function loop_0(loop_0_cont) {
             if (i < files.length) {
                 filename = path + '/' + files[i];

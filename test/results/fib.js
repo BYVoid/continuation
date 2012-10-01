@@ -1,7 +1,7 @@
 var fib = function () {
+    var b;
     var a = 0;
     var current = 1;
-    var b;
     function loop_0(loop_0_cont) {
         if (true) {
             b = a;

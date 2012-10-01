@@ -1,7 +1,9 @@
+var a;
+var err;
 (function (cont) {
     try {
-        var a = 1;
-        var err = 'some-error';
+        a = 1;
+        err = 'some-error';
         setTimeout(function () {
             try {
                 JSON.parse('invalid-json');

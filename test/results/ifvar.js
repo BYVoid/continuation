@@ -17,8 +17,7 @@ var p;
             if (1) {
                 j = i;
             } else {
-                j = i + 1;
-                k = 0;
+                j = i + 1, k = 0;
                 while (true) {
                     p = k;
                 }

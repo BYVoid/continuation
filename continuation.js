@@ -14,7 +14,7 @@ exports.transform = function (code) {
   return escodegen.generate(ast, {
     format: {
       indent: {
-        style: '    ',
+        style: '  ',
         base: 0
       },
     },

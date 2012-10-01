@@ -4,7 +4,6 @@ var num = 1;
     function case_0(cont) {
         if (num == 1) {
             return cont();
-        } else {
         }
         case_1(cont);
     }

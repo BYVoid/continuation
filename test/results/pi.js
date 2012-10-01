@@ -3,7 +3,6 @@ var calcPi = function (callback) {
         process.nextTick(function () {
             if (x > 10000) {
                 return callback(0);
-            } else {
             }
             f(x + 4, function () {
                 var d = arguments[0];

@@ -2,7 +2,6 @@
     if (bool) {
         if (a) {
             a = b;
-        } else {
         }
         fs.readFile('e.js', function () {
             var err = arguments[0];

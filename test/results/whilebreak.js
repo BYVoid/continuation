@@ -5,7 +5,6 @@ function loop_0(loop_0_cont) {
             console.log('hello');
             if (i == 5) {
                 return loop_0_cont();
-            } else {
             }
             i++;
             loop_0(loop_0_cont);

@@ -7,7 +7,6 @@
                 JSON.parse('invalid-json');
                 if (err) {
                     throw err;
-                } else {
                 }
                 a = 2;
                 cont();

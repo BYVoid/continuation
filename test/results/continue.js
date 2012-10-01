@@ -4,7 +4,6 @@ function loop_0(loop_0_cont) {
         setTimeout(function () {
             if (i == 3) {
                 return i++, loop_0(loop_0_cont);
-            } else {
             }
             console.log(i);
             i++;

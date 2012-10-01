@@ -45,7 +45,6 @@ function calcDirSize(path, callback) {
 var path = process.argv[2];
 if (!path) {
     path = '.';
-} else {
 }
 calcDirSize(path, function () {
     var err = arguments[0];

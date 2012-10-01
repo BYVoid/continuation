@@ -10,5 +10,14 @@ exports.transform = function (code) {
   ast.normalize();
   //console.error(util.inspect(ast, false, null, true));
   ast.transform();
-  return escodegen.generate(ast);
+  //console.error(util.inspect(ast, false, null, true));
+  return escodegen.generate(ast, {
+    format: {
+      indent: {
+        style: '    ',
+        base: 0
+      },
+    },
+    comment: true,
+  });
 };

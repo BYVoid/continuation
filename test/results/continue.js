@@ -1,4 +1,5 @@
-var i = 0;
+var i;
+i = 0;
 function loop_0(loop_0_cont) {
     if (i < 10) {
         setTimeout(function () {

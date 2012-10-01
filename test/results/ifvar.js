@@ -1,9 +1,4 @@
-var b;
-var c;
-var i;
-var j;
-var k;
-var p;
+var b, c, i, j, k, p;
 (function (cont) {
     if (true) {
         b = 'b';
@@ -17,7 +12,8 @@ var p;
             if (1) {
                 j = i;
             } else {
-                j = i + 1, k = 0;
+                j = i + 1;
+                k = 0;
                 while (true) {
                     p = k;
                 }

@@ -1,11 +1,14 @@
-var calcPi = function (callback) {
-    var f = function (x, callback) {
+var calcPi, pi;
+calcPi = function (callback) {
+    var f;
+    f = function (x, callback) {
+        var d;
         process.nextTick(function () {
             if (x > 10000) {
                 return callback(0);
             }
             f(x + 4, function () {
-                var d = arguments[0];
+                d = arguments[0];
                 callback(d + (1 / x - 1 / (x + 2)) * 4);
             });
         });
@@ -13,6 +16,6 @@ var calcPi = function (callback) {
     f(1, callback);
 };
 calcPi(function () {
-    var pi = arguments[0];
+    pi = arguments[0];
     console.log(pi);
 });

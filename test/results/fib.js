@@ -1,7 +1,8 @@
-var fib = function () {
-    var b;
-    var a = 0;
-    var current = 1;
+var fib;
+fib = function () {
+    var a, current, b;
+    a = 0;
+    current = 1;
     function loop_0(loop_0_cont) {
         if (true) {
             b = a;

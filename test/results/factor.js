@@ -1,9 +1,11 @@
-var factor = function (n, callback) {
+var factor;
+factor = function (n, callback) {
+    var rest;
     if (n == 0) {
         return callback(1);
     }
     factor(n - 1, function () {
-        var rest = arguments[0];
+        rest = arguments[0];
         setTimeout(function () {
             console.log(rest);
             callback(n * rest);

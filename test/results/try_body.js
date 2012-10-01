@@ -1,5 +1,4 @@
-var a;
-var err;
+var a, err;
 (function (cont) {
     try {
         a = 1;

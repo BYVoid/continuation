@@ -1,11 +1,12 @@
+var err, text, a;
 (function (cont) {
     if (bool) {
         if (a) {
             a = b;
         }
         fs.readFile('e.js', function () {
-            var err = arguments[0];
-            var text = arguments[1];
+            err = arguments[0];
+            text = arguments[1];
             cont();
         });
     } else {
@@ -13,8 +14,8 @@
             (function (cont) {
                 if (c == 1) {
                     fs.readFile('e.js', function () {
-                        var err = arguments[0];
-                        var text = arguments[1];
+                        err = arguments[0];
+                        text = arguments[1];
                         cont();
                     });
                 } else {
@@ -26,5 +27,5 @@
         }, 1000);
     }
 }(function () {
-    var a = err;
+    a = err;
 }));

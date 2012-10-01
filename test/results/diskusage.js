@@ -1,24 +1,25 @@
-var fs = require('fs');
+var fs, path, err, totalSize, totalBlockSize;
+fs = require('fs');
 function calcDirSize(path, callback) {
-    var filename;
-    var dirSize = 0;
-    var dirBlockSize = 0;
+    var dirSize, dirBlockSize, err, files, i, filename, stats, subDirSize, subDirBlockSize;
+    dirSize = 0;
+    dirBlockSize = 0;
     fs.readdir(path, function () {
-        var err = arguments[0];
-        var files = arguments[1];
-        var i = 0;
+        err = arguments[0];
+        files = arguments[1];
+        i = 0;
         function loop_0(loop_0_cont) {
             if (i < files.length) {
                 filename = path + '/' + files[i];
                 fs.lstat(filename, function () {
-                    var err = arguments[0];
-                    var stats = arguments[1];
+                    err = arguments[0];
+                    stats = arguments[1];
                     (function (cont) {
                         if (stats.isDirectory()) {
                             calcDirSize(filename, function () {
-                                var err = arguments[0];
-                                var subDirSize = arguments[1];
-                                var subDirBlockSize = arguments[2];
+                                err = arguments[0];
+                                subDirSize = arguments[1];
+                                subDirBlockSize = arguments[2];
                                 dirSize += subDirSize;
                                 dirBlockSize += subDirBlockSize;
                                 cont();
@@ -42,14 +43,14 @@ function calcDirSize(path, callback) {
         });
     });
 }
-var path = process.argv[2];
+path = process.argv[2];
 if (!path) {
     path = '.';
 }
 calcDirSize(path, function () {
-    var err = arguments[0];
-    var totalSize = arguments[1];
-    var totalBlockSize = arguments[2];
+    err = arguments[0];
+    totalSize = arguments[1];
+    totalBlockSize = arguments[2];
     console.log('Size:', Math.round(totalSize / 1024), 'KB');
     console.log('Actual Size on Disk:', Math.round(totalBlockSize / 1024), 'KB');
 });

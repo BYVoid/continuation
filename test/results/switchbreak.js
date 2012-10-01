@@ -1,5 +1,6 @@
-var val = 'a';
-var num = 1;
+var val, num;
+val = 'a';
+num = 1;
 (function (cont) {
     function case_0(cont) {
         if (num == 1) {

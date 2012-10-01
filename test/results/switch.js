@@ -1,3 +1,4 @@
+var err, text, end;
 (function (cont) {
     function case_0(cont) {
         a = 1;
@@ -5,15 +6,15 @@
     }
     function case_1(cont) {
         fs.readFile('e.js', function () {
-            var err = arguments[0];
-            var text = arguments[1];
+            err = arguments[0];
+            text = arguments[1];
             cont();
         });
     }
     function case_2(cont) {
         fs.readFile('e.js', function () {
-            var err = arguments[0];
-            var text = arguments[1];
+            err = arguments[0];
+            text = arguments[1];
             case_3(cont);
         });
     }
@@ -49,5 +50,5 @@
         return case_4(cont);
     }
 }(function () {
-    var end = 'a';
+    end = 'a';
 }));

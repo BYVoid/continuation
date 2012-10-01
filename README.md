@@ -85,7 +85,7 @@ function textProcessing(callback) {
 
 Continuation.js is still under development. Most functionalities are not fully implemented or tested.
 
-To be written...
+More details are to be written. See examples below.
 
 ## Examples
 
@@ -93,16 +93,30 @@ Calcuating Fibonacci sequence and printing one number by every one second:
 
 ```javascript
 var fib = function () {
-    var a = 0, current = 1;
-    while (true) {
-        var b = a;
-        a = current;
-        current = a + b;
-        setTimeout(continuation(), 1000);
-        console.log(current);
-    }
+  var a = 0, current = 1;
+  while (true) {
+    var b = a;
+    a = current;
+    current = a + b;
+    setTimeout(continuation(), 1000);
+    console.log(current);
+  }
 };
 fib();
+```
+
+Read 5 files in sequence:
+
+```javascript
+var fs = require('fs');
+
+for (var i = 0; i < 4; i++) {
+  fs.readFile('text' + i + '.js', 'utf-8', continuation(err, text));
+  if (err) throw err;
+  console.log(text);
+}
+
+console.log('Done');
 ```
 
 ## License

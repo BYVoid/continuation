@@ -1,5 +1,13 @@
 #Change Log
 
+## 0.0.4
+
+2012-10-02
+
+* Loading and automatically compiling by require() is working
+* Implemented 'defer' statement
+* Added browser and node.js examples
+
 ## 0.0.3
 
 2012-10-01

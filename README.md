@@ -20,38 +20,46 @@ function textProcessing(callback) {
     });
   });
 }
+textProcessing(function (err, contents) {
+  if (err)
+    console.error(err);
+});
 ```
 
 While using Continuation.js, you write:
 
 ```javascript
-function textProcessing(callback) {
+function textProcessing(ret) {
   fs.readFile('somefile.txt', 'utf-8', continuation(err, contents));
-  if (err) return callback(err);
+  if (err) return ret(err);
   contents = contents.toUpperCase();
   fs.readFile('somefile2.txt', 'utf-8', continuation(err, contents2));
-  if (err) return callback(err);
+  if (err) return ret(err);
   contents += contents2;
   fs.writeFile('somefile_concat_uppercase.txt', contents, continuation(err));
-  if (err) return callback(err);
-  callback(null, contents);
+  if (err) return ret(err);
+  ret(null, contents);
 }
+textProcessing(continuation(err, contents));
+if (err)
+  console.error(err);
 ```
 
 Or even simpler:
 
 ```javascript
-function textProcessing(callback) {
-  try {
-    fs.readFile('somefile.txt', 'utf-8', defer(contents));
-    contents = contents.toUpperCase();
-    fs.readFile('somefile2.txt', 'utf-8', defer(contents2));
-    contents += contents2;
-    fs.writeFile('somefile_concat_uppercase.txt', contents, defer());
-    callback(null, contents);
-  } catch(err) {
-    callback(err);
-  }
+function textProcessing(ret) {
+  fs.readFile('somefile.txt', 'utf-8', defer(contents));
+  contents = contents.toUpperCase();
+  fs.readFile('somefile2.txt', 'utf-8', defer(contents2));
+  contents += contents2;
+  fs.writeFile('somefile_concat_uppercase.txt', contents, defer());
+  ret(null, contents);
+}
+try {
+  textProcessing(defer(contents));
+} catch(err) {
+  console.error(err);
 }
 ```
 
@@ -111,13 +119,14 @@ Read 5 files in sequence:
 var fs = require('fs');
 
 for (var i = 0; i < 4; i++) {
-  fs.readFile('text' + i + '.js', 'utf-8', continuation(err, text));
-  if (err) throw err;
+  fs.readFile('text' + i + '.js', 'utf-8', defer(text));
   console.log(text);
 }
 
 console.log('Done');
 ```
+
+More examples are available in 'examples' directory.
 
 ## License
 

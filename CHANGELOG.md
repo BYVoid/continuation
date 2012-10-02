@@ -5,6 +5,7 @@
 2012-10-02
 
 * Loading and automatically compiling by require() is working
+* Support Coffee Script
 * Implemented 'defer' statement
 * Added browser and node.js examples
 

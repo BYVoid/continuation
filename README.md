@@ -80,7 +80,7 @@ try {
 
 ## Usage
 
-  continuation [options] <file.js> [arguments]
+  continuation [options] <file.js/file.coffee> [arguments]
 
   Options:
 

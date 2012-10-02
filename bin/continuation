@@ -63,6 +63,7 @@ var runCode = function (code, filename) {
   mainModule.filename = filename;
   mainModule.moduleCache = {};
   mainModule.children = [];
+  mainModule.paths = calculatePaths(filename);
   
   //Register require handler
   require.extensions['.js'] = compileAndRun;
@@ -98,6 +99,18 @@ var readAndCompile = function (filename) {
 var compileAndRun = function (module, filename) {
   var code = readAndCompile(filename);
   module._compile(code, filename);
+};
+
+var calculatePaths = function (filename) {
+  var paths = [];
+  var pathSec = path.dirname(filename).split(path.sep);
+  while (pathSec.length > 0) {
+    var modulePath = pathSec.join(path.sep);
+    modulePath += path.sep + 'node_modules';
+    paths.push(modulePath);
+    pathSec.pop();
+  }
+  return paths;
 };
 
 initialize();

@@ -5,29 +5,31 @@ var commander = require('commander');
 var meta = require('../package.json');
 var continuation = require('../continuation');
 
-commander.version(meta.version);
-commander.usage('[options] <file.js> [arguments]');
-commander.option('-c, --compile', 'only compile script file and print it');
-commander.option('-o, --output <filename>', 'compile script file and save as <filename>, implies --compile');
-commander.parse(process.argv);
+var initialize = function () {
+  commander.version(meta.version);
+  commander.usage('[options] <file.js> [arguments]');
+  commander.option('-c, --compile', 'only compile script file and print it');
+  commander.option('-o, --output <filename>', 'compile script file and save as <filename>, implies --compile');
+  commander.parse(process.argv);
+};
 
-var compile = false;
-if (commander.compile)
-  compile = true;
-if (commander.output)
-  compile = true;
+var main = function () {
+  var compile = false;
+  if (commander.compile)
+    compile = true;
+  if (commander.output)
+    compile = true;
 
-var filename = fs.realpathSync(commander.args[0]);
-
-fs.readFile(filename, 'utf-8', function(err, text) {
-  if (err) throw err;
-  var code = continuation.transform(text);
+  var filename = fs.realpathSync(commander.args[0]);
+  var text = fs.readFileSync(filename, 'utf-8');
+  var code = continuation.compile(text);
+  
   if (compile) {
     outputCode(code);
   } else {
-    runCode(code);
+    runCode(code, filename);
   }
-});
+};
 
 var outputCode = function (code) {
   if (commander.output) {
@@ -39,14 +41,29 @@ var outputCode = function (code) {
   }
 };
 
-var runCode = function (code) {
+var runCode = function (code, filename) {
+  //Set current module information
   var mainModule = require.main;
   mainModule.filename = filename;
   mainModule.moduleCache = {};
   mainModule.children = [];
   
+  //Register require handler
+  require.extensions['.js'] = compileAndRun;
+  
+  //Generate program arguments
   var args = commander.args.slice(1);
   process.argv = [process.argv[0], filename].concat(args);
   
+  //Run
   mainModule._compile(code, filename);
 };
+
+var compileAndRun = function (module, filename) {
+  var text = fs.readFileSync(filename, 'utf8');
+  var code = continuation.compile(text);
+  module._compile(code, filename);
+};
+
+initialize();
+main();

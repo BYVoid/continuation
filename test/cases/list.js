@@ -1,5 +1,5 @@
 function delay(num, callback) {
-  setTimeout(continuation(), 10);
+  setTimeout(cont(), 10);
   callback(num);
 }
 
@@ -11,6 +11,6 @@ for (var i = 0; i < 5; i++) {
 console.log(list);
 
 for (var i = 0; i < 5; i++) {
-  delay(i * i, continuation(list[i]));
+  delay(i * i, cont(list[i]));
 }
 console.log(list);

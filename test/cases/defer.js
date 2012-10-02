@@ -1,7 +1,7 @@
 var fs = require('fs');
 
 try {
-  fs.readFile('continuation.j', 'utf-8', defer(text));
+  fs.readFile('continuation.j', 'utf-8', obtain(text));
   console.log(text);
 } catch (e) {
   var util = require('util');

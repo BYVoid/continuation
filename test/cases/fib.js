@@ -4,7 +4,7 @@ var fib = function () {
         var b = a;
         a = current;
         current = a + b;
-        setTimeout(continuation(), 1000);
+        setTimeout(cont(), 1000);
         console.log(current);
     }
 };

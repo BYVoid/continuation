@@ -1,7 +1,7 @@
 try {
   var a = 1;
   var err = 'some-error';
-  setTimeout(continuation(), 200);
+  setTimeout(cont(), 200);
   JSON.parse('invalid-json');
   if (err) throw err;
   a = 2;

@@ -6,6 +6,6 @@ switch (val) {
   if (num == 1)
     break;
   default:
-    setTimeout(continuation(), 500);
+    setTimeout(cont(), 500);
     console.log('default');
 }

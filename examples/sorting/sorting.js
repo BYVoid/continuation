@@ -46,7 +46,7 @@ var SortingAnimations = function (canvas) {
   }
       
   var compareAsync = function (x, y, callback) {
-    setTimeout(continuation(), compareCost);
+    setTimeout(cont(), compareCost);
     callback(x - y);
   };
 
@@ -56,14 +56,14 @@ var SortingAnimations = function (canvas) {
     array[j] = t;
 
     paint(array, [i, j]);
-    setTimeout(continuation(), updateCost);
+    setTimeout(cont(), updateCost);
     callback();
   };
       
   var assignAsync = function (array, i, value, updating, callback) {
     array[i] = value;
     paint(array, updating);
-    setTimeout(continuation(), updateCost);
+    setTimeout(cont(), updateCost);
     callback();
   };
       
@@ -72,8 +72,8 @@ var SortingAnimations = function (canvas) {
     Bubble: function (array, callback) {
       for (var i = 0; i < array.length; i++) {
         for (var j = 0; j < array.length - i - 1; j++) {
-          compareAsync(array[j], array[j + 1], continuation(r));
-          if (r > 0) swapAsync(array, j, j + 1, continuation());
+          compareAsync(array[j], array[j + 1], cont(r));
+          if (r > 0) swapAsync(array, j, j + 1, cont());
         }
       }
       callback();
@@ -88,17 +88,17 @@ var SortingAnimations = function (canvas) {
 
         while (i <= j) {
           while (true) {
-            compareAsync(array[i], pivot, continuation(r));
+            compareAsync(array[i], pivot, cont(r));
             if (r < 0) { i++; } else { break; }
           }
 
           while (true) {
-            compareAsync(array[j], pivot, continuation(r));
+            compareAsync(array[j], pivot, cont(r));
             if (r > 0) { j--; } else { break; }
           }
 
           if (i <= j) {
-            swapAsync(array, i, j, continuation());
+            swapAsync(array, i, j, cont());
             i++;
             j--;
           }
@@ -108,17 +108,17 @@ var SortingAnimations = function (canvas) {
       };
           
       var sortAsync = function (begin, end, callback) {
-        partitionAsync(begin, end, continuation(index));
+        partitionAsync(begin, end, cont(index));
 
         if (begin < index - 1) 
-          sortAsync(begin, index - 1, continuation());
+          sortAsync(begin, index - 1, cont());
 
         if (index < end) 
-          sortAsync(index, end, continuation());
+          sortAsync(index, end, cont());
         callback();
       };
         
-      sortAsync(0, array.length - 1, continuation());
+      sortAsync(0, array.length - 1, cont());
       callback();
     },
         
@@ -126,11 +126,11 @@ var SortingAnimations = function (canvas) {
       for(var j = 0; j < array.length - 1; j++) {
         var mi = j;
         for (var i = j + 1; i < array.length; i++) {
-          compareAsync(array[i], array[mi], continuation(r));
+          compareAsync(array[i], array[mi], cont(r));
           if (r < 0) { mi = i; }
         }
 
-        swapAsync(array, mi, j, continuation());
+        swapAsync(array, mi, j, cont());
       }
       callback();
     },
@@ -144,16 +144,16 @@ var SortingAnimations = function (canvas) {
               
           var j;
           for (j = i; j >= gap; j -= gap) {
-            compareAsync(temp, array[j - gap], continuation(r));
+            compareAsync(temp, array[j - gap], cont(r));
             
             if (r < 0) {
-              assignAsync(array, j, array[j - gap], null, continuation());
+              assignAsync(array, j, array[j - gap], null, cont());
             } else {
               break;
             }
           }
               
-          assignAsync(array, j, temp, [j], continuation());
+          assignAsync(array, j, temp, [j], cont());
         }
       }
       callback();
@@ -173,7 +173,7 @@ var SortingAnimations = function (canvas) {
       
   this.sortAsync = function (name, array, callback) {
     paint(array);
-    sortOperations[name](array, continuation());
+    sortOperations[name](array, cont());
     paint(array);
     callback();
   };

@@ -8,6 +8,8 @@ function calcDirSize(path, callback) {
   fs.readdir(path, function () {
     err = arguments[0];
     files = arguments[1];
+    if (err)
+      throw err;
     i = 0;
     function loop_0(loop_0_cont) {
       if (i < files.length) {
@@ -15,12 +17,16 @@ function calcDirSize(path, callback) {
         fs.lstat(filename, function () {
           err = arguments[0];
           stats = arguments[1];
+          if (err)
+            throw err;
           (function (cont) {
             if (stats.isDirectory()) {
               calcDirSize(filename, function () {
                 err = arguments[0];
                 subDirSize = arguments[1];
                 subDirBlockSize = arguments[2];
+                if (err)
+                  throw err;
                 dirSize += subDirSize;
                 dirBlockSize += subDirBlockSize;
                 cont();
@@ -52,6 +58,8 @@ calcDirSize(path, function () {
   err = arguments[0];
   totalSize = arguments[1];
   totalBlockSize = arguments[2];
+  if (err)
+    throw err;
   console.log('Size:', Math.round(totalSize / 1024), 'KB');
   console.log('Actual Size on Disk:', Math.round(totalBlockSize / 1024), 'KB');
 });

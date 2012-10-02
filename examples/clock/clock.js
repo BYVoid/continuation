@@ -46,6 +46,6 @@ var drawClock = function(time) {
 var drawClockAsync = function(interval) {
   while (true) {
     drawClock(new Date());
-    setTimeout(continuation(), interval);
+    setTimeout(cont(), interval);
   }
 };

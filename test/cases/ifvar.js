@@ -1,6 +1,6 @@
 if (true) {
   var b = 'b';
-  process.nextTick(continuation());
+  process.nextTick(cont());
   var c = 'c';
 } else {
   for (var i = 1; i < 10; i++) {

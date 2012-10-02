@@ -30,17 +30,17 @@ While using Continuation.js, you write:
 
 ```javascript
 function textProcessing(ret) {
-  fs.readFile('somefile.txt', 'utf-8', continuation(err, contents));
+  fs.readFile('somefile.txt', 'utf-8', cont(err, contents));
   if (err) return ret(err);
   contents = contents.toUpperCase();
-  fs.readFile('somefile2.txt', 'utf-8', continuation(err, contents2));
+  fs.readFile('somefile2.txt', 'utf-8', cont(err, contents2));
   if (err) return ret(err);
   contents += contents2;
-  fs.writeFile('somefile_concat_uppercase.txt', contents, continuation(err));
+  fs.writeFile('somefile_concat_uppercase.txt', contents, cont(err));
   if (err) return ret(err);
   ret(null, contents);
 }
-textProcessing(continuation(err, contents));
+textProcessing(cont(err, contents));
 if (err)
   console.error(err);
 ```
@@ -49,15 +49,15 @@ Or even simpler:
 
 ```javascript
 function textProcessing(ret) {
-  fs.readFile('somefile.txt', 'utf-8', defer(contents));
+  fs.readFile('somefile.txt', 'utf-8', obtain(contents));
   contents = contents.toUpperCase();
-  fs.readFile('somefile2.txt', 'utf-8', defer(contents2));
+  fs.readFile('somefile2.txt', 'utf-8', obtain(contents2));
   contents += contents2;
-  fs.writeFile('somefile_concat_uppercase.txt', contents, defer());
+  fs.writeFile('somefile_concat_uppercase.txt', contents, obtain());
   ret(null, contents);
 }
 try {
-  textProcessing(defer(contents));
+  textProcessing(obtain(contents));
 } catch(err) {
   console.error(err);
 }
@@ -106,7 +106,7 @@ var fib = function () {
     var b = a;
     a = current;
     current = a + b;
-    setTimeout(continuation(), 1000);
+    setTimeout(cont(), 1000);
     console.log(current);
   }
 };
@@ -119,7 +119,7 @@ Read 5 files in sequence:
 var fs = require('fs');
 
 for (var i = 0; i < 4; i++) {
-  fs.readFile('text' + i + '.js', 'utf-8', defer(text));
+  fs.readFile('text' + i + '.js', 'utf-8', obtain(text));
   console.log(text);
 }
 

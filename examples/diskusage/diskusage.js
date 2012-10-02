@@ -2,12 +2,12 @@ var fs = require('fs');
 
 function calcDirSize(path, callback) {
   var dirSize = 0, dirBlockSize = 0;
-  fs.readdir(path, defer(files));
+  fs.readdir(path, obtain(files));
   for (var i = 0; i < files.length; i++) {
     var filename = path + '/' + files[i];
-    fs.lstat(filename, defer(stats));
+    fs.lstat(filename, obtain(stats));
     if (stats.isDirectory()) {
-      calcDirSize(filename, defer(subDirSize, subDirBlockSize));
+      calcDirSize(filename, obtain(subDirSize, subDirBlockSize));
       dirSize += subDirSize;
       dirBlockSize += subDirBlockSize;
     } else {
@@ -21,7 +21,7 @@ function calcDirSize(path, callback) {
 var path = process.argv[2];
 if (!path) path = '.';
 
-calcDirSize(path, defer(totalSize, totalBlockSize));
+calcDirSize(path, obtain(totalSize, totalBlockSize));
 
 console.log('Size:', Math.round(totalSize / 1024), 'KB');
 console.log('Actual Size on Disk:', Math.round(totalBlockSize / 1024), 'KB');

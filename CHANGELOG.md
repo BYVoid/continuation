@@ -14,7 +14,7 @@
 2012-10-01
 
 * Added try..catch statement support
-* Declare arguments in continuation() automatically
+* Declare arguments in cont() automatically
 * Eliminated generated empty 'else' block
 * Refactored variables declaration extraction
 * Use 2-space indent to generate code

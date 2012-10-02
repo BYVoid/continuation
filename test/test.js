@@ -21,6 +21,7 @@ var files = [
   'try_both.js',
   'list.js',
   'defer.js',
+  'forin.js',
 ];
 
 var test = function(filename, done) {

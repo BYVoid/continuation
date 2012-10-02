@@ -1,13 +1,21 @@
 #!/usr/bin/env node
 
 var fs = require('fs');
+var path = require('path');
 var commander = require('commander');
 var meta = require('../package.json');
 var continuation = require('../continuation');
 
+//Try loading coffee script
+try {
+  var coffee = require('coffee-script');
+} catch (e) {
+  coffee = null;
+}
+
 var initialize = function () {
   commander.version(meta.version);
-  commander.usage('[options] <file.js> [arguments]');
+  commander.usage('[options] <file.js/file.coffee> [arguments]');
   commander.option('-c, --compile', 'only compile script file and print it');
   commander.option('-o, --output <filename>', 'compile script file and save as <filename>, implies --compile');
   commander.parse(process.argv);
@@ -21,8 +29,7 @@ var main = function () {
     compile = true;
 
   var filename = fs.realpathSync(commander.args[0]);
-  var text = fs.readFileSync(filename, 'utf-8');
-  var code = continuation.compile(text);
+  var code = readAndCompile(filename);
   
   if (compile) {
     outputCode(code);
@@ -50,6 +57,9 @@ var runCode = function (code, filename) {
   
   //Register require handler
   require.extensions['.js'] = compileAndRun;
+  if (coffee !== null) {
+    require.extensions['.coffee'] = compileAndRun;
+  }
   
   //Generate program arguments
   var args = commander.args.slice(1);
@@ -59,9 +69,25 @@ var runCode = function (code, filename) {
   mainModule._compile(code, filename);
 };
 
+var readAndCompile = function (filename) {
+  var code = fs.readFileSync(filename, 'utf-8');
+  
+  var ext = path.extname(filename);
+  //Coffee-script support
+  if (ext === '.coffee') {
+    if (coffee !== null) {
+      code = coffee.compile(code);
+    } else {
+      throw new Error('Can not found Coffee Script module');
+    }
+  }
+  
+  code = continuation.compile(code);
+  return code;
+};
+
 var compileAndRun = function (module, filename) {
-  var text = fs.readFileSync(filename, 'utf8');
-  var code = continuation.compile(text);
+  var code = readAndCompile(filename);
   module._compile(code, filename);
 };
 

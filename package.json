@@ -20,11 +20,15 @@
     "type": "git",
     "url": "git://github.com/BYVoid/continuation.git"
   },
+  "preferGlobal": true,
   "bugs": {
     "url": "https://github.com/BYVoid/continuation/issues"
   },
   "keywords": [
-    "continuation"
+	"compiler",
+    "continuation",
+	"coffeescript",
+	"monad"
   ],
   "dependencies": {
     "esprima": "0.9.9",

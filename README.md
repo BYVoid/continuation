@@ -80,14 +80,14 @@ try {
 
 ## Usage
 
-  continuation [options] <file.js/file.coffee> [arguments]
+    continuation [options] <file.js/file.coffee> [arguments]
 
-  Options:
+    Options:
 
-    -h, --help               output usage information
-    -V, --version            output the version number
-    -c, --compile            only compile script file and print it
-    -o, --output <filename>  compile script file and save as <filename>, implies --compile
+      -h, --help               output usage information
+      -V, --version            output the version number
+      -c, --compile            only compile script file and print it
+      -o, --output <filename>  compile script file and save as <filename>, implies --compile
 
 ## Documentation
 

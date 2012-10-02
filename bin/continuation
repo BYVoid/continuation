@@ -27,12 +27,12 @@ var main = function () {
   try {
     if (!filename) throw new Error('You should specify a script file.');
     filename = fs.realpathSync(filename);
-    var code = readAndCompile(filename);
   } catch (e) {
     console.error(e.toString());
     console.error(commander.helpInformation());
     process.exit(-1);
   }
+  var code = readAndCompile(filename);
   
   var compile = false;
   if (commander.compile)

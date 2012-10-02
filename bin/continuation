@@ -22,15 +22,24 @@ var initialize = function () {
 };
 
 var main = function () {
+  var filename = commander.args[0];
+  
+  try {
+    if (!filename) throw new Error('You should specify a script file.');
+    filename = fs.realpathSync(filename);
+    var code = readAndCompile(filename);
+  } catch (e) {
+    console.error(e.toString());
+    console.error(commander.helpInformation());
+    process.exit(-1);
+  }
+  
   var compile = false;
   if (commander.compile)
     compile = true;
   if (commander.output)
     compile = true;
 
-  var filename = fs.realpathSync(commander.args[0]);
-  var code = readAndCompile(filename);
-  
   if (compile) {
     outputCode(code);
   } else {

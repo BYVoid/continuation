@@ -21,6 +21,7 @@ var files = [
   'try_both.js',
   'list.js',
   'defer.js',
+  'for.js',
   'forin.js',
 ];
 

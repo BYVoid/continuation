@@ -109,7 +109,9 @@ var readAndCompile = function (filename) {
   if (options.cache) {
     code = readCache(filename);
     if (code !== null) {
-      console.error('Cache hit');
+      if (options.verbose) {
+        console.error('Cache hit');
+      }
       return code;
     }
   }
@@ -128,7 +130,9 @@ var readAndCompile = function (filename) {
   code = continuation.compile(code, options);
   
   if (options.cache) {
+    if (options.verbose) {
       console.error('Cache updated');
+    }
     writeCache(filename, code);
   }
   

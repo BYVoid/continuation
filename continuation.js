@@ -59,11 +59,13 @@ var transformNeeded = function (ast) {
   var needed = false;
   traverse(ast, function (node) {
     if (node.type === 'CallExpression') {
-      if (node.callee.type === 'Identifier') {
-        if (node.callee.name === helpers.contName || node.callee.name === helpers.obtainName) {
-          needed = true;
+      node.arguments.forEach(function (argument) {
+        if (argument.type === 'CallExpression' && argument.callee.type === 'Identifier') {
+          if (argument.callee.name === helpers.contName || argument.callee.name === helpers.obtainName) {
+            needed = true;
+          }
         }
-      }
+      });
     }
     return node;
   });

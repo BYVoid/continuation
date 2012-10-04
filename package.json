@@ -33,7 +33,8 @@
   "dependencies": {
     "esprima": "0.9.9",
     "escodegen": "0.0.9",
-	"commander": "1.0.4"
+	"commander": "1.0.4",
+	"mkdirp": "0.3.4"
   },
   "devDependencies": {
     "mocha": "1.5.0"

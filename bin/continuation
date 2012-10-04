@@ -3,6 +3,7 @@
 var fs = require('fs');
 var path = require('path');
 var commander = require('commander');
+var mkdirp = require('mkdirp');
 var meta = require('../package.json');
 var continuation = require('../continuation');
 
@@ -17,12 +18,16 @@ try {
   coffee = null;
 }
 
+var cacheDefaultPath = '/tmp/continuation';
+
 var initialize = function () {
   commander.version(meta.version);
   commander.usage('[options] <file.js/file.coffee> [arguments]');
-  commander.option('-c, --compile', 'only compile script file and print it');
+  commander.option('-p, --print', 'compile script file and print it');
   commander.option('-o, --output <filename>', 'compile script file and save as <filename>');
   commander.option('-e, --explicit', 'compile only if "use continuation" is explicitly declared');
+  commander.option('-c, --cache [directory]', 'run and cache compiled sources to [directory], by default [directory] is ' + cacheDefaultPath);
+  commander.option('-v, --verbose', 'print verbosal information to stderr');
   commander.parse(process.argv);
 };
 
@@ -30,6 +35,15 @@ var main = function () {
   var filename = commander.args[0];
   if (commander.explicit) {
     options.compileMark = true;
+  }
+  if (commander.cache) {
+    options.cache = commander.cache;
+    if (options.cache === true) {
+      options.cache = cacheDefaultPath;
+    }
+  }
+  if (commander.verbose) {
+    options.verbose = true;
   }
   
   try {
@@ -42,13 +56,13 @@ var main = function () {
   }
   var code = readAndCompile(filename);
   
-  var compile = false;
-  if (commander.compile)
-    compile = true;
+  var print = false;
+  if (commander.print)
+    print = true;
   if (commander.output)
-    compile = true;
+    print = true;
 
-  if (compile) {
+  if (print) {
     outputCode(code);
   } else {
     runCode(code, filename);
@@ -88,6 +102,18 @@ var runCode = function (code, filename) {
 };
 
 var readAndCompile = function (filename) {
+  if (options.verbose) {
+    console.error('Load ' + filename);
+  }
+  
+  if (options.cache) {
+    code = readCache(filename);
+    if (code !== null) {
+      console.error('Cache hit');
+      return code;
+    }
+  }
+  
   var code = fs.readFileSync(filename, 'utf-8');
   
   var ext = path.extname(filename);
@@ -99,8 +125,13 @@ var readAndCompile = function (filename) {
       throw new Error('Can not found Coffee Script module');
     }
   }
-  
   code = continuation.compile(code, options);
+  
+  if (options.cache) {
+      console.error('Cache updated');
+    writeCache(filename, code);
+  }
+  
   return code;
 };
 
@@ -119,6 +150,35 @@ var calculatePaths = function (filename) {
     pathSec.pop();
   }
   return paths;
+};
+
+var getCachedFilePath = function (filename) {
+  return path.join(options.cache, filename + '_c.js');
+};
+
+var readCache = function (filename) {
+  var cachedFilePath = getCachedFilePath(filename);
+  var exists = fs.existsSync(cachedFilePath);
+  if (!exists) {
+    return null;
+  }
+  
+  var stat = fs.lstatSync(cachedFilePath);
+  var cacheMtime = stat.mtime;
+  var stat = fs.lstatSync(filename);
+  var sourceMtime = stat.mtime;
+  
+  if (sourceMtime > cacheMtime) {
+    return null;
+  }
+  
+  return fs.readFileSync(cachedFilePath, 'utf-8');
+};
+
+var writeCache = function (filename, code) {
+  var cachedFilePath = getCachedFilePath(filename);
+  mkdirp.sync(path.dirname(cachedFilePath), 0777);
+  fs.writeFileSync(cachedFilePath, code);
 };
 
 initialize();

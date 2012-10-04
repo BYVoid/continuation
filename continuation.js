@@ -27,6 +27,12 @@ exports.compile = function (origCode, options) {
   helpers.reset();
   var ast = parser.parse(code);
   
+  if (options.compileMark) {
+    if (!findCompileMark(ast)) {
+      return origCode;
+    }
+  }
+  
   if (!options.force && !transformNeeded(ast)) {
     return header + origCode;
   }
@@ -55,6 +61,19 @@ exports.compile = function (origCode, options) {
 //Alias
 exports.transform = exports.compile;
 
+var findCompileMark = function (ast) {
+  var found = false;
+  traverse(ast, function (node) {
+    if (node.type === 'ExpressionStatement') {
+      if (node.expression.type === 'Literal' && node.expression.value === 'use continuation') {
+        found = true;
+      }
+    }
+    return node;
+  });
+  return found;
+};
+
 var transformNeeded = function (ast) {
   var needed = false;
   traverse(ast, function (node) {
@@ -70,4 +89,4 @@ var transformNeeded = function (ast) {
     return node;
   });
   return needed;
-}
+};

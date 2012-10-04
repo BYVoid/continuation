@@ -6,6 +6,10 @@ var commander = require('commander');
 var meta = require('../package.json');
 var continuation = require('../continuation');
 
+var options = {
+  compileMark: false
+};
+
 //Try loading coffee script
 try {
   var coffee = require('coffee-script');
@@ -17,12 +21,16 @@ var initialize = function () {
   commander.version(meta.version);
   commander.usage('[options] <file.js/file.coffee> [arguments]');
   commander.option('-c, --compile', 'only compile script file and print it');
-  commander.option('-o, --output <filename>', 'compile script file and save as <filename>, implies --compile');
+  commander.option('-o, --output <filename>', 'compile script file and save as <filename>');
+  commander.option('-e, --explicit', 'compile only if "use continuation" is explicitly declared');
   commander.parse(process.argv);
 };
 
 var main = function () {
   var filename = commander.args[0];
+  if (commander.explicit) {
+    options.compileMark = true;
+  }
   
   try {
     if (!filename) throw new Error('You should specify a script file.');
@@ -92,7 +100,7 @@ var readAndCompile = function (filename) {
     }
   }
   
-  code = continuation.compile(code);
+  code = continuation.compile(code, options);
   return code;
 };
 

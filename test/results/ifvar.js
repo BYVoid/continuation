@@ -23,6 +23,8 @@ var b, c, i, j, k, p;
     }
     cont();
   }
-}(function () {
+}(function (err) {
+  if (err !== undefined)
+    return cont(err);
   console.log(b);
 }));

@@ -30,7 +30,9 @@ var err, text, end;
           cont();
         });
       }
-    }(function () {
+    }(function (err) {
+      if (err !== undefined)
+        return cont(err);
       case_4(cont);
     }));
   }

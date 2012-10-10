@@ -36,7 +36,9 @@ function calcDirSize(path, callback) {
               dirBlockSize += 512 * stats.blocks;
               cont();
             }
-          }(function () {
+          }(function (err) {
+            if (err !== undefined)
+              return cont(err);
             i++;
             loop_0(loop_0_cont);
           }));

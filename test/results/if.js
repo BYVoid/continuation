@@ -22,11 +22,15 @@ var err, text, a;
         } else {
           cont();
         }
-      }(function () {
+      }(function (err) {
+        if (err !== undefined)
+          return cont(err);
         cont();
       }));
     }, 1000);
   }
-}(function () {
+}(function (err) {
+  if (err !== undefined)
+    return cont(err);
   a = err;
 }));

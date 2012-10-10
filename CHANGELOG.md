@@ -1,11 +1,22 @@
 #Change Log
 
+## 0.0.5
+
+2012-10-10
+
+* Compile source code only if needed
+* Add 'explicit' and 'verbose' options for compilation and loading
+* Implemented script loading cache
+* Supported LogicalExpression,RegExp, etc
+* Fixed a bug if no 'catch' clause found in try statement
+* Fixed a bug about nested try and if statements
+
 ## 0.0.4
 
 2012-10-02
 
 * Loading and automatically compiling by require() is working
-* Support Coffee Script
+* Supported Coffee Script
 * Implemented 'defer' statement
 * Added browser and node.js examples
 

@@ -1,8 +1,8 @@
 # Continuation.js
 
-Continuation.js is a compiler for asynchronous [Continuation-Passing Style](http://en.wikipedia.org/wiki/Continuation-passing_style) transformation, which simplifies asynchronous programming.
+Continuation.js is a compiler for asynchronous [Continuation-Passing Style](http://en.wikipedia.org/wiki/Continuation-passing_style) transformation, which simplifies asynchronous JavaScript programming.
 
-Typically writing with asynchronous control flow is a pain because you will easily write nested callbacks like below:
+Typically, writing with asynchronous control flow is a pain because you will easily write nested callbacks like below:
 
 ```javascript
 function textProcessing(callback) {
@@ -26,7 +26,7 @@ textProcessing(function (err, contents) {
 });
 ```
 
-While using Continuation.js, you write:
+This kind of coding style is called 'callback hells' or 'callback pyramids'. While using Continuation.js, you directly write:
 
 ```javascript
 function textProcessing(ret) {
@@ -71,29 +71,34 @@ try {
 * Flexible coding style
 * Readable and debuggable compiled code
 * Compatible with CoffeeScript
-* Supports both Node.js and browser JavaScript
+* Supports both Node.js and browser-side JavaScript
 * Parallel execution supported
 
 ## Installation
+
+Install Continuation.js with [NPM](https://npmjs.org/package/continuation):
 
     npm install -g continuation
 
 ## Usage
 
-    continuation [options] <file.js/file.coffee> [arguments]
+    Usage: continuation [options] <file.js/file.coffee> [arguments]
 
     Options:
 
       -h, --help               output usage information
       -V, --version            output the version number
-      -c, --compile            only compile script file and print it
-      -o, --output <filename>  compile script file and save as <filename>, implies --compile
+      -p, --print              compile script file and print it
+      -o, --output <filename>  compile script file and save as <filename>
+      -e, --explicit           compile only if "use continuation" is explicitly declared
+      -c, --cache [directory]  run and cache compiled sources to [directory], by default [directory] is /tmp/continuation
+      -v, --verbose            print verbosal information to stderr
 
 ## Documentation
 
 Continuation.js is still under development. Most functionalities are not fully implemented or tested.
 
-More details are to be written. See examples below.
+More details are to be written.
 
 ## Examples
 
@@ -127,35 +132,3 @@ console.log('Done');
 ```
 
 More examples are available in 'examples' directory.
-
-## License
-
-BSD License
-
-    Copyright 2012 (c) Carbo KUO
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions
-    are met:
-
-        * Redistributions of source code must retain the above
-          copyright notice, this list of conditions and the following
-          disclaimer.
-
-        * Redistributions in binary form must reproduce the above
-          copyright notice, this list of conditions and the following
-          disclaimer in the documentation and/or other materials
-          provided with the distribution.
-
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER “AS IS” AND ANY
-    EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE
-    LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
-    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
-    THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-    SUCH DAMAGE.

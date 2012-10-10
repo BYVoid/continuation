@@ -1,6 +1,6 @@
 {
   "name": "continuation",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Continuation.js is a compiler for asynchronous JavaScript Continuation-Passing style transformation",
   "author": "BYVoid",
   "license": "BSD",
@@ -27,8 +27,9 @@
   "keywords": [
 	"compiler",
     "continuation",
-	"coffeescript",
-	"monad"
+	"monad",
+	"cps",
+	"coffeescript"
   ],
   "dependencies": {
     "esprima": "0.9.9",

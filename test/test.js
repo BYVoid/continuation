@@ -23,6 +23,7 @@ var files = [
   'defer.js',
   'for.js',
   'forin.js',
+  'try_if.js',
 ];
 
 var test = function(filename, done) {

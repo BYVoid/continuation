@@ -24,10 +24,16 @@ exports.compile = function (origCode, options) {
   //Wrap whole file into a function
   var code = '(function () {\n' + origCode + '\n}).call(this);\n';
   
+  if (options.compileMark && code.indexOf('use continuation') === -1) {
+    //Mark literal not found in code
+    return origCode;
+  }
+  
   helpers.reset();
   var ast = parser.parse(code);
   
   if (options.compileMark) {
+    //Traverse ast and find compile mark
     if (!findCompileMark(ast)) {
       return origCode;
     }

@@ -1,6 +1,6 @@
 {
   "name": "continuation",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Continuation.js is a compiler for asynchronous JavaScript Continuation-Passing style transformation",
   "author": "BYVoid",
   "license": "BSD",
@@ -25,19 +25,19 @@
     "url": "https://github.com/BYVoid/continuation/issues"
   },
   "keywords": [
-	"compiler",
+    "compiler",
     "continuation",
-	"monad",
-	"cps",
-	"coffeescript"
+    "monad",
+    "cps",
+    "coffeescript"
   ],
   "dependencies": {
-    "esprima": "0.9.9",
-    "escodegen": "0.0.9",
-	"commander": "1.0.4",
-	"mkdirp": "0.3.4"
+    "esprima": "1.0.2",
+    "escodegen": "0.0.15",
+    "commander": "1.1.1",
+    "mkdirp": "0.3.4"
   },
   "devDependencies": {
-    "mocha": "1.5.0"
+    "mocha": "1.7.3"
   }
 }

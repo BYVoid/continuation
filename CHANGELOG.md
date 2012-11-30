@@ -1,5 +1,12 @@
 #Change Log
 
+## 0.0.6
+
+2012-12-1
+
+* Show more details if an error occurs while parsing
+* Check if needed to compile before parsing if 'explict' is specified
+
 ## 0.0.5
 
 2012-10-10

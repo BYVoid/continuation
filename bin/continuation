@@ -140,6 +140,7 @@ var readAndCompile = function (filename) {
 };
 
 var compileAndRun = function (module, filename) {
+  global.currentFilename = filename;
   var code = readAndCompile(filename);
   module._compile(code, filename);
 };

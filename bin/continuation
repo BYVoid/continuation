@@ -18,6 +18,12 @@ try {
   coffee = null;
 }
 
+try {
+  var live = require('LiveScript');
+} catch (e) {
+  live = null;
+}
+
 var cacheDefaultPath = '/tmp/continuation';
 
 var initialize = function () {
@@ -118,20 +124,29 @@ var readAndCompile = function (filename) {
   
   var code = fs.readFileSync(filename, 'utf-8');
   
-  var ext = path.extname(filename);
-  //Coffee-script support
-  if (ext === '.coffee') {
-    if (coffee !== null) {
-      try {
+  try {
+    var ext = path.extname(filename);
+    if (ext === '.coffee') {
+      //Coffee-script support
+      if (coffee !== null) {
         code = coffee.compile(code);
-      } catch (err) {
-        throw new Error(filename + ': ' + err.message);
+      } else {
+        throw new Error('Can not find CoffeeScript module');
       }
-    } else {
-      throw new Error('Can not found Coffee Script module');
+    } else if (ext === '.ls') {
+      //LiveScript support
+      if (live !== null) {
+        code = live.compile(code);
+      } else {
+        throw new Error('Can not find LiveScript module');
+      }
     }
+    code = continuation.compile(code, options);
+  } catch (err) {
+    console.error('In file', filename);
+    console.error(err.stack);
+    process.exit(-1);
   }
-  code = continuation.compile(code, options);
   
   if (options.cache) {
     if (options.verbose) {

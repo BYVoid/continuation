@@ -22,7 +22,7 @@ exports.compile = function (origCode, options) {
   }
   
   //Wrap whole file into a function
-  var code = '(function () {\n' + origCode + '\n}).call(this);\n';
+  var code = '(function () {' + origCode + '\n}).call(this);\n';
   
   if (options.compileMark && code.indexOf('use continuation') === -1) {
     //Mark literal not found in code

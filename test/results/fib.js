@@ -4,20 +4,20 @@ fib = function () {
   var a, current, b;
   a = 0;
   current = 1;
-  function loop_0(loop_0_cont) {
+  function _$loop_0(_$loop_0__$cont) {
     if (true) {
       b = a;
       a = current;
       current = a + b;
       setTimeout(function () {
         console.log(current);
-        loop_0(loop_0_cont);
+        _$loop_0(_$loop_0__$cont);
       }, 1000);
     } else {
-      loop_0_cont();
+      _$loop_0__$cont();
     }
   }
-  loop_0(function () {
+  _$loop_0(function () {
   });
 };
 fib();

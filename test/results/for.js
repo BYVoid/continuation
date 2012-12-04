@@ -6,17 +6,17 @@ list = [
   3
 ];
 _i = 0, _len = list.length;
-function loop_0(loop_0_cont) {
+function _$loop_0(_$loop_0__$cont) {
   if (_i < _len) {
     e = list[_i];
     console.log(e);
     setTimeout(function () {
       _i++;
-      loop_0(loop_0_cont);
+      _$loop_0(_$loop_0__$cont);
     }, 300);
   } else {
-    loop_0_cont();
+    _$loop_0__$cont();
   }
 }
-loop_0(function () {
+_$loop_0(function () {
 });

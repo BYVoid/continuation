@@ -122,7 +122,11 @@ var readAndCompile = function (filename) {
   //Coffee-script support
   if (ext === '.coffee') {
     if (coffee !== null) {
-      code = coffee.compile(code);
+      try {
+        code = coffee.compile(code);
+      } catch (err) {
+        throw new Error(filename + ': ' + err.message);
+      }
     } else {
       throw new Error('Can not found Coffee Script module');
     }

@@ -1,5 +1,12 @@
 #Change Log
 
+## 0.0.7
+
+2012-12-5
+
+* Support LiveScript
+* Show more beautiful error message of parsing
+
 ## 0.0.6
 
 2012-12-1

@@ -70,7 +70,7 @@ try {
 * No additional non-native JavaScript syntax
 * Flexible coding style
 * Readable and debuggable compiled code
-* Compatible with CoffeeScript
+* Compatible with [CoffeeScript](http://coffeescript.org/) and [LiveScript](http://livescript.net/)
 * Supports both Node.js and browser-side JavaScript
 * Parallel execution supported
 

@@ -131,4 +131,4 @@ for (var i = 0; i < 4; i++) {
 console.log('Done');
 ```
 
-More examples are available in 'examples' directory.
+More examples are available in 'examples' directory and 'test' directory.

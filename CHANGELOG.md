@@ -1,5 +1,11 @@
 #Change Log
 
+## 0.0.8
+
+2012-12-5
+
+* Implemented asynchronous transformation of for..in statement
+
 ## 0.0.7
 
 2012-12-5

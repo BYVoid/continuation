@@ -49,12 +49,16 @@ Or even simpler:
 
 ```javascript
 function textProcessing(ret) {
-  fs.readFile('somefile.txt', 'utf-8', obtain(contents));
-  contents = contents.toUpperCase();
-  fs.readFile('somefile2.txt', 'utf-8', obtain(contents2));
-  contents += contents2;
-  fs.writeFile('somefile_concat_uppercase.txt', contents, obtain());
-  ret(null, contents);
+  try {
+    fs.readFile('somefile.txt', 'utf-8', obtain(contents));
+    contents = contents.toUpperCase();
+    fs.readFile('somefile2.txt', 'utf-8', obtain(contents2));
+    contents += contents2;
+    fs.writeFile('somefile_concat_uppercase.txt', contents, obtain());
+    ret(null, contents);
+  } catch(err) {
+    ret(err);
+  }
 }
 try {
   textProcessing(obtain(contents));

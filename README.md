@@ -396,3 +396,121 @@ console.log('Actual Size on Disk:', Math.round(totalBlockSize / 1024), 'KB');
 ```
 
 More examples are available in 'examples' directory and 'test' directory.
+
+## Relevant projects
+
+Continuation.js is not the only solution of CPS transformation, there are some alternatives.
+Below is a comparison among projects related to synchronous to asynchronous transformation.
+
+<table>
+  <tr>
+    <th>Project</th>
+    <th>Continuation.js</th>
+    <th>streamline.js</th>
+    <th>TameJS</th>
+    <th>Wind.js</th>
+    <th>jwacs</th>
+    <th>NarrativeJS</th>
+    <th>StratifiedJS</th>
+  </tr>
+  <tr>
+    <td>Node.js support</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>Browser side support</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>Additional runtime dependence</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>Additional syntax</td>
+    <td>No</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>Compatibility with compile-to-js language</td>
+    <td>Yes</td>
+    <td>Yes (CoffeeScript)</td>
+    <td>Yes (CoffeeScript)</td>
+    <td>Yes (manually)</td>
+    <td>No</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>Parallel support</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>Unknown</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>Readable generated code</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>Hardly</td>
+    <td>Almost</td>
+    <td>Unknown</td>
+    <td>No</td>
+    <td>Unknown</td>
+  </tr>
+  <tr>
+    <td>Asynchronous results passing syntax</td>
+    <td>Parameters</td>
+    <td>Return value</td>
+    <td>Parameters</td>
+    <td>Return value</td>
+    <td>Return value</td>
+    <td>Return value</td>
+    <td>Return value</td>
+  </tr>
+  <tr>
+    <td>Documentation</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>Implemented in</td>
+    <td>JavaScript</td>
+    <td>JavaScript</td>
+    <td>JavaScript</td>
+    <td>JavaScript</td>
+    <td>Lisp</td>
+    <td>Java</td>
+    <td>JavaScript</td>
+  </tr>
+</table>

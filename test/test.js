@@ -1,6 +1,7 @@
 var assert = require('assert');
 var fs = require('fs');
 var path = require('path');
+var child_process = require('child_process');
 var continuation = require('../continuation');
 
 var files = [
@@ -28,23 +29,43 @@ var files = [
   'parallel_exception.js',
 ];
 
-var test = function(filename, done) {
+var compileByApi = function(filename, done) {
   fs.readFile('test/cases/' + filename, 'utf-8', function (err, code) {
-    if (err) done(err);
+    if (err) return done(err);
     code = continuation.transform(code);
     fs.readFile('test/results/' + filename, 'utf-8', function(err, result) {
-      if (err) done(err);
+      if (err) return done(err);
       assert.equal(code, result);
       done();
     });
   });
 }
 
+var compileByCli = function(filename, done) {
+  var bin = 'bin/continuation'
+  var cmd = bin + ' test/cases/' + filename + ' -p'
+  child_process.exec(cmd, function (err, stdout, stderr) {
+    if (err) return done(err);
+    fs.readFile('test/results/' + filename, 'utf-8', function(err, result) {
+      if (err) done(err);
+      assert.equal(stdout, result + '\n');
+      done();
+    });
+  });
+}
+
 describe('Transformation', function () {
-  describe('Test', function () {
+  describe('Compile by api', function () {
     files.forEach(function (filename) {
       it(filename, function(done){
-        test(filename, done);
+        compileByApi(filename, done);
+      });
+    });
+  });
+  describe('Compile by command line', function () {
+    files.forEach(function (filename) {
+      it(filename, function(done){
+        compileByCli(filename, done);
       });
     });
   });

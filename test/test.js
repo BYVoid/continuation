@@ -24,6 +24,8 @@ var files = [
   'for.js',
   'forin.js',
   'try_if.js',
+  'parallel.js',
+  'parallel_exception.js',
 ];
 
 var test = function(filename, done) {

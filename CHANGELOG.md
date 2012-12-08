@@ -1,5 +1,13 @@
 #Change Log
 
+## 0.1.0
+
+2012-12-8
+
+* Implemented parallel statement, lightweight thread supported
+* Load additional modules lazily in command line
+* Refine many parts of code
+
 ## 0.0.8
 
 2012-12-5

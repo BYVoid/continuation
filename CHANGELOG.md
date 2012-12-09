@@ -1,5 +1,12 @@
 #Change Log
 
+## 0.1.1
+
+2012-12-9
+
+* Preserve location and range information for every node in abstract syntax tree
+* Implemented source map (unstable and untested)
+
 ## 0.1.0
 
 2012-12-8

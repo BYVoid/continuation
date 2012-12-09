@@ -7,8 +7,6 @@ try {
   console.log('after if');
 } catch (err) {
   console.error(err);
-  return;
 }
 
 console.log('Done');
-

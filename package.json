@@ -1,6 +1,6 @@
 {
   "name": "continuation",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Continuation.js is a compiler for asynchronous JavaScript Continuation-Passing style transformation",
   "author": "BYVoid",
   "license": "BSD",

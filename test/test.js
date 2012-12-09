@@ -32,7 +32,7 @@ var files = [
 var compileByApi = function(filename, done) {
   fs.readFile('test/cases/' + filename, 'utf-8', function (err, code) {
     if (err) return done(err);
-    code = continuation.transform(code);
+    code = continuation.compile(code);
     fs.readFile('test/results/' + filename, 'utf-8', function(err, result) {
       if (err) return done(err);
       assert.equal(code, result);

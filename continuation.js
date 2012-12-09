@@ -4,7 +4,7 @@ var helpers = require('./lib/helpers');
 
 var sourceMap;
 
-exports.compile = function (origCode, options) {
+exports.compile = function (code, options) {
   if (!options) {
     options = {
       sourceMap: false
@@ -16,12 +16,9 @@ exports.compile = function (origCode, options) {
     indent = options.indent;
   }
   
-  //Wrap whole file into a function
-  var code = '(function () {' + origCode + '\n}).call(this);';
-  
   if (!options.force && options.explicit && code.indexOf('use continuation') === -1) {
     //Mark literal not found in code
-    return origCode;
+    return code;
   }
   
   //Reset helper
@@ -34,7 +31,7 @@ exports.compile = function (origCode, options) {
   if (options.explicit) {
     //Traverse ast and find explicit compilation mark
     if (!findExplicitMark(ast)) {
-      return origCode;
+      return code;
     }
   }
   
@@ -43,16 +40,13 @@ exports.compile = function (origCode, options) {
   
   //Tranformation not needed
   if (!options.force && !transformNeeded(ast)) {
-    return origCode + '\n' + mark;
+    return code + '\n' + mark;
   }
   
   ast.normalize();
   //console.error(util.inspect(ast, false, null, true)); //debug
   ast.transform();
   //console.error(util.inspect(ast, false, null, true)); //debug
-
-  var Program = require('./lib/syntax/Program');
-  ast = new Program(ast.body[0].expression.callee.object.body.body);
 
   //Generate code
   var escodegen = require('escodegen');

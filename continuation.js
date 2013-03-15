@@ -43,7 +43,9 @@ exports.compile = function (code, options) {
     return code + '\n' + mark;
   }
   
-  ast.normalize();
+  traverse(ast, function (node) {
+    return node.normalize ? node.normalize() : node;
+  });
   //console.error(util.inspect(ast, false, null, true)); //debug
   ast.transform();
   //console.error(util.inspect(ast, false, null, true)); //debug

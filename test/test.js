@@ -20,6 +20,7 @@ var files = [
   'try_body.js',
   'try_catch.js',
   'try_both.js',
+  'try_sync.js',
   'list.js',
   'defer.js',
   'for.js',
@@ -27,6 +28,7 @@ var files = [
   'try_if.js',
   'parallel.js',
   'parallel_exception.js',
+  'nested_block.js',
 ];
 
 var compileByApi = function(filename, done) {

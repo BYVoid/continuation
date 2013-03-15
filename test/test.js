@@ -21,6 +21,7 @@ var files = [
   'try_catch.js',
   'try_both.js',
   'try_sync.js',
+  'try_nested_function.js',
   'list.js',
   'defer.js',
   'for.js',

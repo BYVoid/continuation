@@ -1,5 +1,14 @@
 #Change Log
 
+## 0.1.2
+
+2013-3-15
+
+* Fix cache mode on Windows
+* Fix synchronous try/catch block
+* Fix nested function in try/catch block
+* Refactor to reduce `normalize`
+
 ## 0.1.1
 
 2012-12-9

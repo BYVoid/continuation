@@ -468,7 +468,7 @@ Below is a comparison among projects related to synchronous to asynchronous tran
     <td>Yes</td>
     <td>Yes</td>
     <td>Yes</td>
-    <td>No</td>
+    <td>Yes</td>
     <td>Yes</td>
     <td>Unknown</td>
     <td>Yes</td>

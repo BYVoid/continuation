@@ -34,8 +34,8 @@
     "livescript"
   ],
   "dependencies": {
-    "esprima": "1.0.2",
-    "escodegen": "0.0.19",
+    "esprima": "1.0.3",
+    "escodegen": "0.0.22",
     "commander": "1.1.1",
     "mkdirp": "0.3.5"
   },

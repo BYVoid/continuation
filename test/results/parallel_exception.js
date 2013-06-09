@@ -11,13 +11,13 @@ f = function (i, next) {
 r = [];
 (function (_$cont) {
   try {
-    var _$parallel_done = 0;
-    var _$errors = [];
+    var _$parallel_done_0 = 0;
+    var _$errors_0 = [];
     (function (_$cont) {
       try {
         f(50, function () {
           try {
-            ++_$parallel_done;
+            ++_$parallel_done_0;
             _$err = arguments[0];
             r[0] = arguments[1];
             if (_$err)
@@ -29,7 +29,7 @@ r = [];
         });
         f(100, function () {
           try {
-            ++_$parallel_done;
+            ++_$parallel_done_0;
             _$err = arguments[0];
             r[1] = arguments[1];
             if (_$err)
@@ -41,7 +41,7 @@ r = [];
         });
         f(20, function () {
           try {
-            ++_$parallel_done;
+            ++_$parallel_done_0;
             _$err = arguments[0];
             r[2] = arguments[1];
             if (_$err)
@@ -53,7 +53,7 @@ r = [];
         });
         f(10, function () {
           try {
-            ++_$parallel_done;
+            ++_$parallel_done_0;
             _$err = arguments[0];
             r[3] = arguments[1];
             if (_$err)
@@ -69,14 +69,14 @@ r = [];
     }(function (_$err) {
       try {
         if (_$err)
-          _$errors.push(_$err);
-        if (_$parallel_done !== 4)
+          _$errors_0.push(_$err);
+        if (_$parallel_done_0 !== 4)
           return;
-        if (_$errors.length > 0)
-          throw _$errors;
-        _$parallel_done = undefined;
+        if (_$errors_0.length > 0)
+          throw _$errors_0;
+        _$parallel_done_0 = undefined;
         _$err = undefined;
-        _$errors = undefined;
+        _$errors_0 = undefined;
         _$cont();
       } catch (_$err) {
         _$cont(_$err);

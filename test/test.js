@@ -30,6 +30,7 @@ var files = [
   'parallel.js',
   'parallel_exception.js',
   'nested_block.js',
+  'multiple_parallel.js',
 ];
 
 var compileByApi = function(filename, done) {

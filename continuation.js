@@ -58,7 +58,7 @@ exports.compile = function (code, options) {
       indent: {
         style: indent,
         base: 0
-      },
+      }
     },
     comment: true
   };
@@ -76,7 +76,7 @@ exports.getSourceMap = function (file, sources) {
   sourceMap.file = file;
   sourceMap.sources = sources;
   return JSON.stringify(sourceMap);
-}
+};
 
 var findExplicitMark = function (ast) {
   var found = false;

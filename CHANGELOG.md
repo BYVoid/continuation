@@ -1,5 +1,13 @@
 #Change Log
 
+## 0.1.3
+
+2013-6-29
+
+* Fix bugs which happen when multiple parallel statements in a block.
+* Fix a bug of loading coffee-script with `require`.
+* Upgrade dependencies.
+
 ## 0.1.2
 
 2013-3-15

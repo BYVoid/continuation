@@ -87,7 +87,7 @@ r = [];
   }
 }(function (err) {
   if (err !== undefined) {
-    console.error(err);
+    console.log(err);
   }
   console.log('Done');
 }));

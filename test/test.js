@@ -5,7 +5,6 @@ var child_process = require('child_process');
 var continuation = require('../continuation');
 
 var files = [
-  'readfile.js',
   'fib.js',
   'if.js',
   'ifvar.js',
@@ -33,6 +32,8 @@ var files = [
   'multiple_parallel.js',
 ];
 
+var notEval = ['diskusage.js'];
+
 var compileByApi = function(filename, done) {
   fs.readFile('test/cases/' + filename, 'utf-8', function (err, code) {
     if (err) return done(err);
@@ -43,7 +44,22 @@ var compileByApi = function(filename, done) {
       done();
     });
   });
-}
+};
+
+var compileAndRun = function(filename, done) {
+  var code = fs.readFileSync('test/cases/' + filename, 'utf-8');
+  code = continuation.compile(code);
+  var codeFilename = 'test/ctmp.js';
+  fs.writeFileSync(codeFilename, code);
+
+  child_process.exec('node ' + codeFilename, function(err, stdout) {
+    if (err) return done(err);
+    var resultFilename = 'test/outputs/' + path.basename(filename, '.js') + '.txt';
+    var result = fs.readFileSync(resultFilename, 'utf-8');
+    assert.equal(stdout, result);
+    done();
+  });
+};
 
 var compileByCli = function(filename, done) {
   var bin = 'bin/continuation'
@@ -56,18 +72,28 @@ var compileByCli = function(filename, done) {
       done();
     });
   });
-}
+};
 
 describe('Transformation', function () {
   describe('Compile by api', function () {
-    files.forEach(function (filename) {
+    files.forEach(function(filename) {
       it(filename, function(done){
         compileByApi(filename, done);
       });
     });
   });
+  describe('Compile and run', function () {
+    files.forEach(function(filename) {
+      if (notEval.indexOf(filename) != -1) {
+        return;
+      }
+      it(filename, function(done){
+        compileAndRun(filename, done);
+      });
+    });
+  });
   describe('Compile by command line', function () {
-    files.forEach(function (filename) {
+    files.forEach(function(filename) {
       it(filename, function(done){
         compileByCli(filename, done);
       });

@@ -3,7 +3,7 @@ calcPi = function (callback) {
   var f;
   f = function (x, callback) {
     var d;
-    process.nextTick(function () {
+    setImmediate(function () {
       if (x > 10000) {
         return callback(0);
       }

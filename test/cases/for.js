@@ -6,5 +6,5 @@ list = [1, 2, 3];
 for (_i = 0, _len = list.length; _i < _len; _i++) {
   e = list[_i];
   console.log(e);
-  setTimeout(cont(), 300);
+  setTimeout(cont(), 10);
 }

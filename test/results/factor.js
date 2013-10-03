@@ -9,7 +9,7 @@ factor = function (n, callback) {
     setTimeout(function () {
       console.log(rest);
       callback(n * rest);
-    }, 1000);
+    }, 50);
   });
 };
 factor(6, function () {

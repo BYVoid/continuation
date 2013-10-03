@@ -5,7 +5,7 @@
     setTimeout(function () {
       console.log(err);
       _$cont();
-    }, 1000);
+    }, 10);
     return;
   }
   _$cont();

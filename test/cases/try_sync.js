@@ -5,4 +5,4 @@ try {
   x = 2;
 }
 x = 3;
-alert(cont());
+setTimeout(cont(), 10);

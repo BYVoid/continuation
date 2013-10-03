@@ -10,8 +10,11 @@ fib = function () {
       current = a + b;
       setTimeout(function () {
         console.log(current);
+        if (a > 100) {
+          return _$loop_0__$cont();
+        }
         _$loop_0(_$loop_0__$cont);
-      }, 1000);
+      }, 20);
     } else {
       _$loop_0__$cont();
     }

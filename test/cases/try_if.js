@@ -6,7 +6,7 @@ try {
   } else {throw 'Else Err';}
   console.log('after if');
 } catch (err) {
-  console.error(err);
+  console.log(err);
 }
 
 console.log('Done');

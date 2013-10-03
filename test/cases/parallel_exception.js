@@ -17,6 +17,6 @@ try {
     f(10, obtain(r[3]))
   )
 } catch(err) {
-  console.error(err);
+  console.log(err);
 }
 console.log('Done');

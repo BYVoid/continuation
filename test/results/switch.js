@@ -39,7 +39,7 @@ var err, text, end;
     console.log('stop');
     _$cont();
   }
-  switch (val) {
+  switch ('abc') {
   case 'a':
     return case_0(_$cont);
   case 'b':

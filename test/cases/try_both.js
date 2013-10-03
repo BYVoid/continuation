@@ -1,9 +1,9 @@
 try {
-  setTimeout(cont(), 200);
+  setTimeout(cont(), 20);
   throw new Error('my error');
 } catch(err) {
   console.log('Error caught:');
-  setTimeout(cont(), 1000);
+  setTimeout(cont(), 10);
   console.log(err);
 } finally {
   console.log('Finally');

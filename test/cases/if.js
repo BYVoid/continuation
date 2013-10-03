@@ -1,10 +1,10 @@
-if (bool) {
+if (false) {
   if (a)
     a = b;
   fs.readFile('e.js', cont(err, text));
 } else {
-  setTimeOut(cont(), 1000);
-  if (c == 1) {
+  setTimeout(cont(), 10);
+  if (0 == 1) {
     fs.readFile('e.js', cont(err, text));
   }
 }

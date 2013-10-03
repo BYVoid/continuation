@@ -9,7 +9,7 @@ function _$loop_0(_$loop_0__$cont) {
       }
       i++;
       _$loop_0(_$loop_0__$cont);
-    }, 200);
+    }, 20);
   } else {
     _$loop_0__$cont();
   }

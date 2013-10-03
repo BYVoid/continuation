@@ -1,6 +1,6 @@
 var err, text, a;
 (function (_$cont) {
-  if (bool) {
+  if (false) {
     if (a) {
       a = b;
     }
@@ -10,9 +10,9 @@ var err, text, a;
       _$cont();
     });
   } else {
-    setTimeOut(function () {
+    setTimeout(function () {
       (function (_$cont) {
-        if (c == 1) {
+        if (0 == 1) {
           fs.readFile('e.js', function () {
             err = arguments[0];
             text = arguments[1];
@@ -26,7 +26,7 @@ var err, text, a;
           return _$cont(_$err);
         _$cont();
       }));
-    }, 1000);
+    }, 10);
   }
 }(function (_$err) {
   if (_$err !== undefined)

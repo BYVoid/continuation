@@ -12,7 +12,7 @@ function _$loop_0(_$loop_0__$cont) {
     setTimeout(function () {
       _i++;
       _$loop_0(_$loop_0__$cont);
-    }, 300);
+    }, 10);
   } else {
     _$loop_0__$cont();
   }

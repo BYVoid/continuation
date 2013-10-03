@@ -1,8 +1,6 @@
-var fs = require('fs');
-
 for (var i = 0; i < 4; i++) {
-  fs.readFile('continuation.js', 'utf-8', cont(err, text));
-  console.log(err, text);
+  setTimeout(cont(), 10);
+  console.log(i);
 }
 
 console.log('Done');

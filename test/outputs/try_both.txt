@@ -1,0 +1,4 @@
+Error caught:
+[Error: my error]
+Finally
+Done

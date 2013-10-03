@@ -1,0 +1,2 @@
+[Error: my error]
+Done

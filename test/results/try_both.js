@@ -8,7 +8,7 @@
         } catch (_$err) {
           _$cont(_$err);
         }
-      }, 200);
+      }, 20);
     } catch (_$err) {
       _$cont(_$err);
     }
@@ -18,7 +18,7 @@
       setTimeout(function () {
         console.log(err);
         _$cont();
-      }, 1000);
+      }, 10);
     } else
       _$cont();
   }));

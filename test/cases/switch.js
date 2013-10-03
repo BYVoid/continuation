@@ -1,4 +1,4 @@
-switch (val) {
+switch ('abc') {
   case 'a':
     a = 1;
     break;

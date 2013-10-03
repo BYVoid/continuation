@@ -2,7 +2,7 @@ var x, i, _$itmp_list, _$itmp;
 x = [
   'A',
   15,
-  new Date(),
+  4.67,
   true
 ];
 _$itmp_list = [];
@@ -17,7 +17,7 @@ function _$loop_0(_$loop_0__$cont) {
     setTimeout(function () {
       ++_$itmp;
       _$loop_0(_$loop_0__$cont);
-    }, 200);
+    }, 10);
   } else {
     _$loop_0__$cont();
   }

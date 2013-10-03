@@ -34,6 +34,8 @@ var files = [
 
 var notEval = ['diskusage.js'];
 
+var codeFilename = 'test/outputs/ctmp.js';
+
 var compileByApi = function(filename, done) {
   fs.readFile('test/cases/' + filename, 'utf-8', function (err, code) {
     if (err) return done(err);
@@ -49,7 +51,6 @@ var compileByApi = function(filename, done) {
 var compileAndRun = function(filename, done) {
   var code = fs.readFileSync('test/cases/' + filename, 'utf-8');
   code = continuation.compile(code);
-  var codeFilename = 'test/ctmp.js';
   fs.writeFileSync(codeFilename, code);
 
   child_process.exec('node ' + codeFilename, function(err, stdout) {
@@ -98,5 +99,10 @@ describe('Transformation', function () {
         compileByCli(filename, done);
       });
     });
+  });
+  after(function() {
+    if (fs.existsSync(codeFilename)) {
+      fs.unlinkSync(codeFilename);
+    }
   });
 });

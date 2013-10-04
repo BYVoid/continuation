@@ -1,5 +1,11 @@
 #Change Log
 
+## 0.1.4
+
+2013-10-4
+
+* Fix `this` and `argument`.
+
 ## 0.1.3
 
 2013-6-29

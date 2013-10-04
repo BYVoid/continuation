@@ -30,6 +30,7 @@ var files = [
   'parallel_exception.js',
   'nested_block.js',
   'multiple_parallel.js',
+  'this_argument.js',
 ];
 
 var notEval = ['diskusage.js'];

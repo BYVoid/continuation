@@ -12,6 +12,8 @@ Latest version: 0.1.4 (2013-10-04)
 
 Node.js version required: >= 0.8
 
+[![Build Status](https://travis-ci.org/BYVoid/continuation.png?branch=master)](https://travis-ci.org/BYVoid/continuation)
+
 ## Overview
 
 Continuation.js is a compiler for [Continuation-Passing Style](http://en.wikipedia.org/wiki/Continuation-passing_style) transformation, which simplifies asynchronous JavaScript programming.

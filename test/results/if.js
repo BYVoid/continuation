@@ -21,14 +21,14 @@ var err, text, a;
         } else {
           _$cont();
         }
-      }(function (_$err) {
+      }.bind(this)(function (_$err) {
         if (_$err !== undefined)
           return _$cont(_$err);
         _$cont();
       }));
     }.bind(this, arguments), 10);
   }
-}(function (_$err) {
+}.bind(this)(function (_$err) {
   if (_$err !== undefined)
     return _$cont(_$err);
   a = err;

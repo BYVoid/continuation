@@ -22,7 +22,7 @@ var b, c, i, j, k, p;
     }
     _$cont();
   }
-}(function (_$err) {
+}.bind(this)(function (_$err) {
   if (_$err !== undefined)
     return _$cont(_$err);
   console.log(b);

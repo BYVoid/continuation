@@ -19,7 +19,7 @@
       } catch (_$err) {
         _$cont(_$err);
       }
-    }(function (_$err) {
+    }.bind(this)(function (_$err) {
       try {
         if (_$err !== undefined)
           return _$cont(_$err);

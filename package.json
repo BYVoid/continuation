@@ -1,6 +1,6 @@
 {
   "name": "continuation",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Continuation.js is a compiler for asynchronous JavaScript Continuation-Passing style transformation",
   "author": "BYVoid",
   "license": "BSD",
@@ -34,12 +34,12 @@
     "livescript"
   ],
   "dependencies": {
-    "esprima": "1.0.4",
-    "escodegen": "0.0.27",
-    "commander": "2.0.0",
-    "mkdirp": "0.3.5"
+    "esprima": "1.2.5",
+    "escodegen": "1.6.1",
+    "commander": "2.6.0",
+    "mkdirp": "0.5.0"
   },
   "devDependencies": {
-    "mocha": "1.7.4"
+    "mocha": "2.1.0"
   }
 }

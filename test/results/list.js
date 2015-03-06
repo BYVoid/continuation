@@ -23,6 +23,7 @@ function _$loop_0(_$loop_0__$cont) {
     _$loop_0__$cont();
   }
 }
+_$loop_0 = _$loop_0.bind(this);
 _$loop_0(function () {
   console.log(list);
 });

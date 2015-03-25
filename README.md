@@ -6,7 +6,7 @@ Install Continuation.js with [npm](https://npmjs.org/package/continuation):
 
     npm install -g continuation
 
-Latest version: 0.1.4 (2013-10-04)
+Latest version: 0.1.6 (2015-03-25)
 
 [Change log](https://github.com/BYVoid/continuation/blob/master/CHANGELOG.md)
 
@@ -524,3 +524,12 @@ Below is a comparison among projects related to synchronous to asynchronous tran
     <td>JavaScript</td>
   </tr>
 </table>
+
+## Contributers
+
+* [Carbo Kuo](https://github.com/BYVoid)
+* [curimit](https://github.com/curimit)
+* [Tomi Belan](https://github.com/TomiBelan)
+* [Reynir Björnsson](https://github.com/reynir)
+* [summivox](https://github.com/summivox)
+* [shankerwangmiao](https://github.com/shankerwangmiao)

@@ -1,5 +1,19 @@
 #Change Log
 
+## 0.1.6
+
+2015-3-25
+
+* Fix more `this` binding issues.
+* Fix module searching bugs.
+* Fix `continue` in `for in`.
+
+## 0.1.5
+
+2015-3-6
+
+* Fix `this` binding issues.
+
 ## 0.1.4
 
 2013-10-4

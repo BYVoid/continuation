@@ -13,7 +13,7 @@ function inner() {
   }.bind(this)(function (_$err) {
     if (_$err !== undefined)
       return _$cont(_$err);
-  }));
+  }.bind(this)));
 }
 o = {
   name: 'inner',

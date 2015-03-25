@@ -28,7 +28,7 @@
       } catch (_$err) {
         _$cont(_$err);
       }
-    }));
+    }.bind(this)));
   } catch (_$err) {
     _$cont(_$err);
   }

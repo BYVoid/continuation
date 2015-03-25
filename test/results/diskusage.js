@@ -40,7 +40,7 @@ function calcDirSize(path, callback) {
               return _$cont(_$err);
             i++;
             _$loop_0(_$loop_0__$cont);
-          }));
+          }.bind(this)));
         }.bind(this, arguments));
       } else {
         _$loop_0__$cont();

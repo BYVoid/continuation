@@ -1,5 +1,3 @@
-var fs, path, _$err, totalSize, totalBlockSize;
-fs = require('fs');
 function calcDirSize(path, callback) {
   var dirSize, dirBlockSize, _$err, files, i, filename, stats, subDirSize, subDirBlockSize;
   dirSize = 0;
@@ -52,6 +50,8 @@ function calcDirSize(path, callback) {
     });
   }.bind(this, arguments));
 }
+var fs, path, _$err, totalSize, totalBlockSize;
+fs = require('fs');
 path = process.argv[2];
 if (!path) {
   path = '.';

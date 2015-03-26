@@ -1,9 +1,9 @@
-var list, i;
 function delay(num, callback) {
   setTimeout(function (arguments) {
     callback(num);
   }.bind(this, arguments), 10);
 }
+var list, i;
 list = [];
 i = 0;
 while (i < 5) {

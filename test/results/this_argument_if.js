@@ -1,5 +1,3 @@
-var o;
-this.name = 'outter';
 function inner() {
   (function (_$cont) {
     if (true) {
@@ -15,6 +13,8 @@ function inner() {
       return _$cont(_$err);
   }.bind(this)));
 }
+var o;
+this.name = 'outter';
 o = {
   name: 'inner',
   inner: inner

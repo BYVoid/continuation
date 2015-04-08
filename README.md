@@ -6,7 +6,7 @@ Install Continuation.js with [npm](https://npmjs.org/package/continuation):
 
     npm install -g continuation
 
-Latest version: 0.1.6 (2015-03-25)
+Latest version: 0.1.7 (2015-04-08)
 
 [Change log](https://github.com/BYVoid/continuation/blob/master/CHANGELOG.md)
 

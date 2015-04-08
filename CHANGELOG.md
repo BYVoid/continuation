@@ -1,5 +1,11 @@
 #Change Log
 
+## 0.1.7
+
+2015-4-8
+
+* Fix function defination orders.
+
 ## 0.1.6
 
 2015-3-25

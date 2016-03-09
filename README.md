@@ -132,7 +132,7 @@ Compiled code:
 ```javascript
 var err, stats, obj;
 setTimeout(function () {
-  fs.lstat('/path', function () {
+  fs.lstat('/path/file', function () {
     err = arguments[0];
     stats = arguments[1];
     fs.readdir('/path', function () {

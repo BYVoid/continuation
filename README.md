@@ -101,7 +101,7 @@ try {
 
 * A JIT (Just-in-time compilation) and AOT (Ahead-of-time) compiler
 * Strictly no runtime dependence
-* No additional non-native JavaScript syntax and very few reserved keywords (only ``cont``, ``obtain`` and ``parallel``)
+* No additional non-native JavaScript syntax and very few reserved keywords (only ``cont``, ``obtain`` and ``parallel``, also they can be renamed by aliasing)
 * Flexible coding style and readable compiled code
 * Compatible with [CoffeeScript](http://coffeescript.org/) and [LiveScript](http://livescript.net/) (and other compile-to-js language)
 * Supports both Node.js and browser-side JavaScript
@@ -291,6 +291,9 @@ After that you can run it via ``eval`` function.
       -e, --explicit           compile only if "use continuation" is explicitly declared
       -c, --cache [directory]  run and cache compiled sources to [directory], by default [directory] is /tmp/continuation
       -v, --verbose            print verbosal information to stderr
+      --alias-cont <aliasCont>          set another name for "cont" function
+      --alias-obtain <aliasObtain>      set another name for "obtain" function
+      --alias-parallel <aliasParallel>  set another name for "parallel" function
 
 Run code written with Continuation.js (i.e. script.js):
 
@@ -311,6 +314,10 @@ Run code in "explicit mode" (only compile sources with ``'use continuation'``. s
 Cache compiled code (including recursively required modules) to accelerate loading (see documentation):
 
     contination script.js -c
+
+Change names of built-in functions:
+
+    contination script.js --alias-cont cb --alias-obtain tryCb --alias-parallel par
 
 ## Examples
 

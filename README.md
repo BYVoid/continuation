@@ -1,22 +1,10 @@
 # Continuation.js
 
-## Installation
-
-Install Continuation.js with [npm](https://npmjs.org/package/continuation):
-
-    npm install -g continuation
-
-Latest version: 0.1.7 (2015-04-08)
-
-[Change log](https://github.com/BYVoid/continuation/blob/master/CHANGELOG.md)
-
-Node.js version required: >= 0.8
-
-[![Build Status](https://travis-ci.org/BYVoid/continuation.png?branch=master)](https://travis-ci.org/BYVoid/continuation)
+***This project has been deprecated and discontinued. Please stop using it and migrate to ES7 `async` and `await`.***
 
 ## Overview
 
-Continuation.js is a compiler for [Continuation-Passing Style](http://en.wikipedia.org/wiki/Continuation-passing_style) transformation, which simplifies asynchronous JavaScript programming.
+[Continuation.js](https://npmjs.org/package/continuation) is a compiler for [Continuation-Passing Style](http://en.wikipedia.org/wiki/Continuation-passing_style) transformation, which simplifies asynchronous JavaScript programming.
 It translates slightly flavored JavaScript syntax into standard JavaScript, so it can be also called a "translator".
 Continuation.js introduces a virtual function ``cont``, which allow you to write continuation-passing style code (or asynchronous callback style code) far easier.
 `cont` is not a actual function, but a mark with the same syntax to function calls in JavaScript.
